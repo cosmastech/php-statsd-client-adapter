@@ -1,0 +1,26 @@
+{
+  "name": "cosmastech/datadog-stats-laravel",
+  "authors": [
+    {
+      "name": "Marc Qualie",
+      "email": "marc@marcqualie.com",
+      "homepage": "http://marcqualie.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "datadog/php-datadogstatsd": "*",
+    "psr/clock-implementation": "1.0",
+    "nesbot/carbon": "^3.6"
+  },
+  "suggest": {
+    "datadog/php-datadogstatsd": "For DataDog stats",
+    "nesbot/carbon": "For using Carbon as psr/clock-implementation"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cosmastech\\DatadogStatsLaravel\\": "src"
+    }
+  }
+}
