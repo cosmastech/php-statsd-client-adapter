@@ -2,6 +2,8 @@
 
 namespace Cosmastech\StatsDClient\Clients\InMemory;
 
+use Cosmastech\StatsDClient\Clients\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClient\Clients\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryCountRecord;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryDistributionRecord;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryGaugeRecord;
@@ -10,18 +12,22 @@ use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemorySetRecord;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryTimingRecord;
 use Cosmastech\StatsDClient\Clients\StatsDClient;
+use Cosmastech\StatsDClient\TagNormalizers\NoopTagNormalizer;
 use Psr\Clock\ClockInterface;
 
-class InMemoryClient implements StatsDClient
+class InMemoryClient implements StatsDClient, TagNormalizerAware
 {
-    private InMemoryStatsRecord $stats;
-    private readonly ClockInterface $clock;
+    use TagNormalizerAwareTrait;
+
+    protected InMemoryStatsRecord $stats;
+    protected readonly ClockInterface $clock;
 
     public function __construct(ClockInterface $clock)
     {
         $this->clock = $clock;
 
         $this->reset();
+        $this->setTagNormalizer(new NoopTagNormalizer);
     }
 
     public function timing(string $stat, float $time, float $sampleRate = 1.0, array $tags = []): void
