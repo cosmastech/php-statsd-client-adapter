@@ -12,7 +12,7 @@ class DatadogStatsDClient implements StatsDClient, TagNormalizerAware
 {
     use TagNormalizerAwareTrait;
 
-    private function __construct(private readonly DogStatsd $datadogClient)
+    protected function __construct(protected readonly DogStatsd $datadogClient)
     {
         $this->tagNormalizer = new NoopTagNormalizer();
     }
