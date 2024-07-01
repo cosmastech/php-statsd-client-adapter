@@ -4,7 +4,7 @@ namespace Cosmastech\DatadogStatsLaravel\InMemory\Models;
 
 use DateTimeImmutable;
 
-readonly class InMemoryGaugeValueObject
+readonly class InMemoryGaugeRecord
 {
     public function __construct(
         public string $stat,

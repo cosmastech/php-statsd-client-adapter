@@ -2,28 +2,31 @@
 
 namespace Cosmastech\DatadogStatsLaravel\InMemory;
 
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryCountValueObject;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryGaugeValueObject;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryStatsValueObject;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryTimingValueObject;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryCountRecord;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryDistributionRecord;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryGaugeRecord;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryHistogramRecord;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemorySetRecord;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryTimingRecord;
 use Cosmastech\DatadogStatsLaravel\StatsDClient;
 use Psr\Clock\ClockInterface;
 
 class InMemoryClient implements StatsDClient
 {
-    private InMemoryStatsValueObject $stats;
+    private InMemoryStatsRecord $stats;
     private readonly ClockInterface $clock;
 
     public function __construct(ClockInterface $clock)
     {
         $this->clock = $clock;
 
-        $this->stats = new InMemoryStatsValueObject();
+        $this->reset();
     }
 
     public function timing(string $stat, float $time, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->timing[] = new InMemoryTimingValueObject(
+        $this->stats->timing[] = new InMemoryTimingRecord(
             $stat,
             $time,
             $sampleRate,
@@ -34,7 +37,7 @@ class InMemoryClient implements StatsDClient
 
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->gauge[] = new InMemoryGaugeValueObject(
+        $this->stats->gauge[] = new InMemoryGaugeRecord(
             $stat,
             $value,
             $sampleRate,
@@ -45,17 +48,35 @@ class InMemoryClient implements StatsDClient
 
     public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        // TODO: Implement histogram() method.
+        $this->stats->histogram[] = new InMemoryHistogramRecord(
+            $stat,
+            $value,
+            $sampleRate,
+            $tags,
+            $this->clock->now()
+        );
     }
 
     public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        // TODO: Implement distribution() method.
+        $this->stats->distribution[] = new InMemoryDistributionRecord(
+            $stat,
+            $value,
+            $sampleRate,
+            $tags,
+            $this->clock->now()
+        );
     }
 
     public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        // TODO: Implement set() method.
+        $this->stats->distribution[] = new InMemorySetRecord(
+            $stat,
+            $value,
+            $sampleRate,
+            $tags,
+            $this->clock->now()
+        );
     }
 
     public function increment(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
@@ -78,12 +99,17 @@ class InMemoryClient implements StatsDClient
         $now = $this->clock->now();
 
         foreach ($stats as $stat) {
-            $this->stats->count[] = new InMemoryCountValueObject($stat, $delta, $sampleRate, $tags, $now);
+            $this->stats->count[] = new InMemoryCountRecord($stat, $delta, $sampleRate, $tags, $now);
         }
     }
 
-    public function getStats(): InMemoryStatsValueObject
+    public function getStats(): InMemoryStatsRecord
     {
         return $this->stats;
+    }
+
+    public function reset(): void
+    {
+        $this->stats = new InMemoryStatsRecord();
     }
 }

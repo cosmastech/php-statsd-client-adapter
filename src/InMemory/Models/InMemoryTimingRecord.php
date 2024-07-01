@@ -4,7 +4,7 @@ namespace Cosmastech\DatadogStatsLaravel\InMemory\Models;
 
 use DateTimeImmutable;
 
-readonly class InMemoryTimingValueObject
+readonly class InMemoryTimingRecord
 {
     public function __construct(
         public string $stat,
