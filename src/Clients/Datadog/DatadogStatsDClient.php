@@ -2,16 +2,19 @@
 
 namespace Cosmastech\StatsDClient\Clients\Datadog;
 
+use Cosmastech\StatsDClient\Clients\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClient\Clients\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClient\Clients\StatsDClient;
-use Cosmastech\StatsDClient\Concerns\NormalizesTags;
+use Cosmastech\StatsDClient\TagNormalizers\NoopTagNormalizer;
 use DataDog\DogStatsd;
 
-class DatadogStatsDClient implements StatsDClient
+class DatadogStatsDClient implements StatsDClient, TagNormalizerAware
 {
-    use NormalizesTags;
+    use TagNormalizerAwareTrait;
 
     private function __construct(private readonly DogStatsd $datadogClient)
     {
+        $this->tagNormalizer = new NoopTagNormalizer();
     }
 
     public static function fromConfig(array $config): static
