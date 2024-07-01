@@ -70,7 +70,7 @@ class InMemoryClient implements StatsDClient
 
     public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->distribution[] = new InMemorySetRecord(
+        $this->stats->set[] = new InMemorySetRecord(
             $stat,
             $value,
             $sampleRate,
