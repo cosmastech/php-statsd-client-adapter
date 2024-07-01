@@ -8,6 +8,7 @@ use DataDog\DogStatsd;
 class DatadogStatsDClient implements StatsDClient
 {
     use NormalizesTags;
+
     private function __construct(private readonly DogStatsd $datadogClient)
     {
     }
