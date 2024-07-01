@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\DatadogStatsLaravel\Concerns;
+namespace Cosmastech\StatsDClient\Concerns;
 
 trait NormalizesTags
 {

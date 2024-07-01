@@ -1,10 +1,9 @@
 {
-  "name": "cosmastech/datadog-stats-laravel",
+  "name": "cosmastech/statsd-client",
   "authors": [
     {
-      "name": "Marc Qualie",
-      "email": "marc@marcqualie.com",
-      "homepage": "http://marcqualie.com",
+      "name": "Luke Kuzmish",
+      "email": "luke@kuzmish.com",
       "role": "Developer"
     }
   ],
@@ -20,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Cosmastech\\DatadogStatsLaravel\\": "src"
+      "Cosmastech\\StatsDClient\\": "src"
     }
   }
 }

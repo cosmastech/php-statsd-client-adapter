@@ -1,8 +1,8 @@
 <?php
 
-namespace Cosmastech\DatadogStatsLaravel;
+namespace Cosmastech\StatsDClient;
 
-use Cosmastech\DatadogStatsLaravel\Concerns\NormalizesTags;
+use Cosmastech\StatsDClient\Concerns\NormalizesTags;
 use DataDog\DogStatsd;
 
 class DatadogStatsDClient implements StatsDClient

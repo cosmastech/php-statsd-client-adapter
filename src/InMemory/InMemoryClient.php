@@ -1,15 +1,15 @@
 <?php
 
-namespace Cosmastech\DatadogStatsLaravel\InMemory;
+namespace Cosmastech\StatsDClient\InMemory;
 
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryCountRecord;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryDistributionRecord;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryGaugeRecord;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryHistogramRecord;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemorySetRecord;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryStatsRecord;
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryTimingRecord;
-use Cosmastech\DatadogStatsLaravel\StatsDClient;
+use Cosmastech\StatsDClient\InMemory\Models\InMemoryCountRecord;
+use Cosmastech\StatsDClient\InMemory\Models\InMemoryDistributionRecord;
+use Cosmastech\StatsDClient\InMemory\Models\InMemoryGaugeRecord;
+use Cosmastech\StatsDClient\InMemory\Models\InMemoryHistogramRecord;
+use Cosmastech\StatsDClient\InMemory\Models\InMemorySetRecord;
+use Cosmastech\StatsDClient\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClient\InMemory\Models\InMemoryTimingRecord;
+use Cosmastech\StatsDClient\StatsDClient;
 use Psr\Clock\ClockInterface;
 
 class InMemoryClient implements StatsDClient

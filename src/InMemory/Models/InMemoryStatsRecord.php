@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\DatadogStatsLaravel\InMemory\Models;
+namespace Cosmastech\StatsDClient\InMemory\Models;
 
 class InMemoryStatsRecord
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\DatadogStatsLaravel;
+namespace Cosmastech\StatsDClient;
 
 interface StatsDClient
 {
