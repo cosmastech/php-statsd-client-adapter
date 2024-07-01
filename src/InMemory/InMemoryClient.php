@@ -2,7 +2,7 @@
 
 namespace Cosmastech\DatadogStatsLaravel\InMemory;
 
-use Cosmastech\DatadogStatsLaravel\InMemory\Models\ArrayCountValueObject;
+use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryCountValueObject;
 use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryGaugeValueObject;
 use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryStatsValueObject;
 use Cosmastech\DatadogStatsLaravel\InMemory\Models\InMemoryTimingValueObject;
@@ -26,17 +26,6 @@ class InMemoryClient implements StatsDClient
         $this->stats->timing[] = new InMemoryTimingValueObject(
             $stat,
             $time,
-            $sampleRate,
-            $tags,
-            $this->clock->now()
-        );
-    }
-
-    public function microTiming(string $stat, float $time, float $sampleRate = 1.0, array $tags = []): void
-    {
-        $this->stats->timing[] = new InMemoryTimingValueObject(
-            $stat,
-            $time * 1000,
             $sampleRate,
             $tags,
             $this->clock->now()
@@ -89,7 +78,7 @@ class InMemoryClient implements StatsDClient
         $now = $this->clock->now();
 
         foreach ($stats as $stat) {
-            $this->stats->count[] = new ArrayCountValueObject($stat, $delta, $sampleRate, $tags, $now);
+            $this->stats->count[] = new InMemoryCountValueObject($stat, $delta, $sampleRate, $tags, $now);
         }
     }
 

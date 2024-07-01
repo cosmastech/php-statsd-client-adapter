@@ -23,11 +23,6 @@ class DatadogStatsDClient implements StatsDClient
         $this->datadogClient->timing($stat, $time, $sampleRate, $this->normalizeTags($tags));
     }
 
-    public function microTiming(string $stat, float $time, float $sampleRate = 1.0, array $tags = []): void
-    {
-        $this->datadogClient->microtiming($stat, $time, $sampleRate, $this->normalizeTags($tags));
-    }
-
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->datadogClient->gauge($stat, $value, $sampleRate, $this->normalizeTags($tags));
