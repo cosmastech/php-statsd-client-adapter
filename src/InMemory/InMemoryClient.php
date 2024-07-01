@@ -86,7 +86,7 @@ class InMemoryClient implements StatsDClient
 
     public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = -1): void
     {
-        if ($value < 0) {
+        if ($value > 0) {
             $value *= -1;
         }
 
