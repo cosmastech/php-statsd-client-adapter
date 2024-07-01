@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\InMemory;
+namespace Cosmastech\StatsDClient\Tests\Clients\InMemory;
 
 use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryCountRecord;

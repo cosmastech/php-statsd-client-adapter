@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\InMemory;
+namespace Cosmastech\StatsDClient\Tests\Clients\InMemory;
 
 use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryStatsRecord;
@@ -44,7 +44,8 @@ class InMemoryTest extends BaseTestCase
         self::assertEachRecordWithinStatsRecordIsEmpty($inMemoryClient->getStats());
     }
 
-    private static function assertEachRecordWithinStatsRecordIsEmpty(InMemoryStatsRecord $record): void {
+    private static function assertEachRecordWithinStatsRecordIsEmpty(InMemoryStatsRecord $record): void
+    {
         self::assertEmpty($record->distribution);
         self::assertEmpty($record->count);
         self::assertEmpty($record->histogram);
