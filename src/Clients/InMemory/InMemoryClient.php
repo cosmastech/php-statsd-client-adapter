@@ -36,7 +36,7 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
             $stat,
             $time,
             $sampleRate,
-            $tags,
+            $this->normalizeTags($tags),
             $this->clock->now()
         );
     }
@@ -47,7 +47,7 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $tags,
+            $this->normalizeTags($tags),
             $this->clock->now()
         );
     }
@@ -58,7 +58,7 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $tags,
+            $this->normalizeTags($tags),
             $this->clock->now()
         );
     }
@@ -69,7 +69,7 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $tags,
+            $this->normalizeTags($tags),
             $this->clock->now()
         );
     }
@@ -80,7 +80,7 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $tags,
+            $this->normalizeTags($tags),
             $this->clock->now()
         );
     }
@@ -105,7 +105,7 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
         $now = $this->clock->now();
 
         foreach ($stats as $stat) {
-            $this->stats->count[] = new InMemoryCountRecord($stat, $delta, $sampleRate, $tags, $now);
+            $this->stats->count[] = new InMemoryCountRecord($stat, $delta, $sampleRate, $this->normalizeTags($tags), $now);
         }
     }
 

@@ -6,6 +6,7 @@ use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClient\Tests\BaseTestCase;
 use Cosmastech\StatsDClient\Tests\ClockStub;
+use Cosmastech\StatsDClient\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -42,6 +43,23 @@ class InMemoryTest extends BaseTestCase
 
         // Then
         self::assertEachRecordWithinStatsRecordIsEmpty($inMemoryClient->getStats());
+    }
+
+    #[Test]
+    public function setTagNormalizer()
+    {
+        // Given
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+
+        // And
+        $tagNormalizerSpy = new TagNormalizerSpy;
+        $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
+
+        // When
+        $inMemoryClient->increment("something", tags: ["my-tags" => "are-here"]);
+
+        // Then
+        $this->assertEqualsCanonicalizing([["my-tags" => "are-here"]], $tagNormalizerSpy->getNormalizeCalls());
     }
 
     private static function assertEachRecordWithinStatsRecordIsEmpty(InMemoryStatsRecord $record): void
