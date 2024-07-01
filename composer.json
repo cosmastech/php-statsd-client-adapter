@@ -13,6 +13,10 @@
     "psr/clock-implementation": "1.0",
     "nesbot/carbon": "^3.6"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^11.2.5",
+    "nesbot/carbon": "^3.6.0"
+  },
   "suggest": {
     "datadog/php-datadogstatsd": "For DataDog stats",
     "nesbot/carbon": "For using Carbon as psr/clock-implementation"
@@ -21,5 +25,13 @@
     "psr-4": {
       "Cosmastech\\StatsDClient\\": "src"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Cosmastech\\StatsDClient\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "phpunit tests"
   }
 }
