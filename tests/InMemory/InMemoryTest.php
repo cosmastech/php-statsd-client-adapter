@@ -2,8 +2,8 @@
 
 namespace Cosmastech\StatsDClient\Tests\InMemory;
 
-use Cosmastech\StatsDClient\InMemory\InMemoryClient;
-use Cosmastech\StatsDClient\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClient\Tests\BaseTestCase;
 use Cosmastech\StatsDClient\Tests\ClockStub;
 use DateTimeImmutable;

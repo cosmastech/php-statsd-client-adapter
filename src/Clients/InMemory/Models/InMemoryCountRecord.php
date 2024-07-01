@@ -1,16 +1,17 @@
 <?php
 
-namespace Cosmastech\StatsDClient\InMemory\Models;
+namespace Cosmastech\StatsDClient\Clients\InMemory\Models;
 
 use DateTimeImmutable;
 
-readonly class InMemoryDistributionRecord
+class InMemoryCountRecord
 {
     public function __construct(
         public string $stat,
-        public float $value,
+        public int $count,
         public float $sampleRate,
         public array $tags,
         public DateTimeImmutable $recordedAt,
-    ) {}
+    ) {
+    }
 }

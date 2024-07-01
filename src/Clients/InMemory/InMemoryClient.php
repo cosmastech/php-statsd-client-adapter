@@ -1,15 +1,15 @@
 <?php
 
-namespace Cosmastech\StatsDClient\InMemory;
+namespace Cosmastech\StatsDClient\Clients\InMemory;
 
-use Cosmastech\StatsDClient\InMemory\Models\InMemoryCountRecord;
-use Cosmastech\StatsDClient\InMemory\Models\InMemoryDistributionRecord;
-use Cosmastech\StatsDClient\InMemory\Models\InMemoryGaugeRecord;
-use Cosmastech\StatsDClient\InMemory\Models\InMemoryHistogramRecord;
-use Cosmastech\StatsDClient\InMemory\Models\InMemorySetRecord;
-use Cosmastech\StatsDClient\InMemory\Models\InMemoryStatsRecord;
-use Cosmastech\StatsDClient\InMemory\Models\InMemoryTimingRecord;
-use Cosmastech\StatsDClient\StatsDClient;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryCountRecord;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryDistributionRecord;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryGaugeRecord;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryHistogramRecord;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemorySetRecord;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryTimingRecord;
+use Cosmastech\StatsDClient\Clients\StatsDClient;
 use Psr\Clock\ClockInterface;
 
 class InMemoryClient implements StatsDClient

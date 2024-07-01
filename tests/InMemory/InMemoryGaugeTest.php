@@ -2,7 +2,7 @@
 
 namespace Cosmastech\StatsDClient\Tests\InMemory;
 
-use Cosmastech\StatsDClient\InMemory\InMemoryClient;
+use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
 use Cosmastech\StatsDClient\Tests\BaseTestCase;
 use Cosmastech\StatsDClient\Tests\ClockStub;
 use DateTimeImmutable;

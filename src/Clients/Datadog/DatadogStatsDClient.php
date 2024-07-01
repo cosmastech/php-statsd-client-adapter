@@ -1,7 +1,8 @@
 <?php
 
-namespace Cosmastech\StatsDClient;
+namespace Cosmastech\StatsDClient\Clients\Datadog;
 
+use Cosmastech\StatsDClient\Clients\StatsDClient;
 use Cosmastech\StatsDClient\Concerns\NormalizesTags;
 use DataDog\DogStatsd;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Cosmastech\StatsDClient\InMemory\Models;
+namespace Cosmastech\StatsDClient\Clients\InMemory\Models;
 
 use DateTimeImmutable;
 
-readonly class InMemoryHistogramRecord
+readonly class InMemoryGaugeRecord
 {
     public function __construct(
         public string $stat,
@@ -12,6 +12,5 @@ readonly class InMemoryHistogramRecord
         public float $sampleRate,
         public array $tags,
         public DateTimeImmutable $recordedAt,
-    ) {
-    }
+    ) {}
 }

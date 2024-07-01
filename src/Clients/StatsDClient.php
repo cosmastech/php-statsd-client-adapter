@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient;
+namespace Cosmastech\StatsDClient\Clients;
 
 interface StatsDClient
 {

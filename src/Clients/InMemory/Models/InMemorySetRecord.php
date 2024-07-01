@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\InMemory\Models;
+namespace Cosmastech\StatsDClient\Clients\InMemory\Models;
 
 use DateTimeImmutable;
 
