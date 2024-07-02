@@ -5,6 +5,7 @@ namespace Cosmastech\StatsDClient\Tests\Clients\InMemory;
 use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
 use Cosmastech\StatsDClient\Tests\BaseTestCase;
 use Cosmastech\StatsDClient\Tests\ClockStub;
+use Cosmastech\StatsDClient\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -30,6 +31,22 @@ class InMemoryDecrementTest extends BaseTestCase
         self::assertEqualsCanonicalizing(["ringo" => "drummer"], $countStat->tags);
         self::assertEquals($stubDateTime, $countStat->recordedAt);
         self::assertEquals(0.1, $countStat->sampleRate);
+    }
+
+    #[Test]
+    public function normalizesTags() {
+        // Given
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+
+        // And
+        $tagNormalizerSpy = new TagNormalizerSpy;
+        $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
+
+        // When
+        $inMemoryClient->decrement("irrelevant", tags: ["hello" => "world"]);
+
+        // Then
+        $this->assertEqualsCanonicalizing([["hello" => "world"]], $tagNormalizerSpy->getNormalizeCalls());
     }
 
     #[Test]

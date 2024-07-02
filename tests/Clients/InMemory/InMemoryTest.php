@@ -9,6 +9,7 @@ use Cosmastech\StatsDClient\Tests\ClockStub;
 use Cosmastech\StatsDClient\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
+use Throwable;
 
 class InMemoryTest extends BaseTestCase
 {

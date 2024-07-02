@@ -6,6 +6,7 @@ use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
 use Cosmastech\StatsDClient\Clients\InMemory\Models\InMemoryCountRecord;
 use Cosmastech\StatsDClient\Tests\BaseTestCase;
 use Cosmastech\StatsDClient\Tests\ClockStub;
+use Cosmastech\StatsDClient\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -48,5 +49,21 @@ class InMemoryIncrementTest extends BaseTestCase
         // Then
         $countRecord = $inMemoryClient->getStats()->count[0];
         self::assertEqualsCanonicalizing(["abc" => 199, "xyz" => "end"], $countRecord->tags);
+    }
+
+    #[Test]
+    public function normalizesTags() {
+        // Given
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+
+        // And
+        $tagNormalizerSpy = new TagNormalizerSpy;
+        $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
+
+        // When
+        $inMemoryClient->increment("irrelevant", tags: ["hello" => "world"]);
+
+        // Then
+        $this->assertEqualsCanonicalizing([["hello" => "world"]], $tagNormalizerSpy->getNormalizeCalls());
     }
 }

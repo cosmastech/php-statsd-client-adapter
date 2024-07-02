@@ -4,7 +4,7 @@ namespace Cosmastech\StatsDClient\Clients;
 
 interface StatsDClient
 {
-    public function timing(string $stat, float $time, float $sampleRate = 1.0, array $tags = []): void;
+    public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void;
 
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void;
 

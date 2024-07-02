@@ -5,6 +5,7 @@ namespace Cosmastech\StatsDClient\Tests\Clients\InMemory;
 use Cosmastech\StatsDClient\Clients\InMemory\InMemoryClient;
 use Cosmastech\StatsDClient\Tests\BaseTestCase;
 use Cosmastech\StatsDClient\Tests\ClockStub;
+use Cosmastech\StatsDClient\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -29,5 +30,21 @@ class InMemoryGaugeTest extends BaseTestCase
         self::assertEquals(1, $gaugeRecord->sampleRate);
         self::assertEqualsCanonicalizing([], $gaugeRecord->tags);
         self::assertEquals($stubDateTime, $gaugeRecord->recordedAt);
+    }
+
+    #[Test]
+    public function normalizesTags() {
+        // Given
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+
+        // And
+        $tagNormalizerSpy = new TagNormalizerSpy;
+        $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
+
+        // When
+        $inMemoryClient->gauge(stat: "irrelevant", value: 1.0, tags: ["hello" => "world"]);
+
+        // Then
+        $this->assertEqualsCanonicalizing([["hello" => "world"]], $tagNormalizerSpy->getNormalizeCalls());
     }
 }
