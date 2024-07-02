@@ -22,7 +22,6 @@ class DatadogStatsDClient implements StatsDClient, TagNormalizerAware
         return new static(new DogStatsd($config));
     }
 
-
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->datadogClient->timing($stat, $durationMs, $sampleRate, $this->normalizeTags($tags));

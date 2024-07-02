@@ -34,12 +34,13 @@ class InMemoryDecrementTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags() {
+    public function normalizesTags()
+    {
         // Given
-        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable()));
 
         // And
-        $tagNormalizerSpy = new TagNormalizerSpy;
+        $tagNormalizerSpy = new TagNormalizerSpy();
         $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
 
         // When
@@ -53,7 +54,7 @@ class InMemoryDecrementTest extends BaseTestCase
     public function positiveValue_convertsToANegativeNumber()
     {
         // Given
-        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable()));
 
         // When
         $inMemoryClient->decrement("some-stat", value: 1845);

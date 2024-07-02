@@ -27,7 +27,7 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
         $this->clock = $clock;
 
         $this->reset();
-        $this->setTagNormalizer(new NoopTagNormalizer);
+        $this->setTagNormalizer(new NoopTagNormalizer());
     }
 
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void

@@ -12,7 +12,8 @@ use PHPUnit\Framework\Attributes\Test;
 class InMemoryTimingTest extends BaseTestCase
 {
     #[Test]
-    public function storesTimingRecord() {
+    public function storesTimingRecord()
+    {
         // Given
         $stubDateTime = new DateTimeImmutable("2019-02-13 07:56:00");
         $inMemoryClient = new InMemoryClient(new ClockStub($stubDateTime));
@@ -33,12 +34,13 @@ class InMemoryTimingTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags() {
+    public function normalizesTags()
+    {
         // Given
-        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable()));
 
         // And
-        $tagNormalizerSpy = new TagNormalizerSpy;
+        $tagNormalizerSpy = new TagNormalizerSpy();
         $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
 
         // When

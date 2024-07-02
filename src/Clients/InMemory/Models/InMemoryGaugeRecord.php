@@ -12,5 +12,6 @@ readonly class InMemoryGaugeRecord
         public float $sampleRate,
         public array $tags,
         public DateTimeImmutable $recordedAt,
-    ) {}
+    ) {
+    }
 }

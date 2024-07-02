@@ -12,5 +12,6 @@ readonly class InMemoryDistributionRecord
         public float $sampleRate,
         public array $tags,
         public DateTimeImmutable $recordedAt,
-    ) {}
+    ) {
+    }
 }

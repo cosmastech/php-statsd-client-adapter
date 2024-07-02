@@ -41,7 +41,7 @@ class InMemoryIncrementTest extends BaseTestCase
     public function recordsTags()
     {
         // Given
-        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable()));
 
         // When
         $inMemoryClient->increment("hello", tags: ["abc" => 199, "xyz" => "end"]);
@@ -52,12 +52,13 @@ class InMemoryIncrementTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags() {
+    public function normalizesTags()
+    {
         // Given
-        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable));
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable()));
 
         // And
-        $tagNormalizerSpy = new TagNormalizerSpy;
+        $tagNormalizerSpy = new TagNormalizerSpy();
         $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
 
         // When

@@ -19,7 +19,7 @@ class ConvertEnumNormalizer implements TagNormalizer
 
     protected function convertEnumToName(mixed $value): mixed
     {
-        if (!$value instanceof UnitEnum) {
+        if (! $value instanceof UnitEnum) {
             return $value;
         }
 
