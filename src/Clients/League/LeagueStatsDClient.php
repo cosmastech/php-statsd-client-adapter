@@ -5,6 +5,8 @@ namespace Cosmastech\StatsDClient\Clients\League;
 use Cosmastech\StatsDClient\Clients\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClient\Clients\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClient\Clients\StatsDClient;
+use Cosmastech\StatsDClient\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
+use Cosmastech\StatsDClient\Utility\SampleRateDecider\SampleRateSendDecider;
 use League\StatsD\Client;
 use League\StatsD\Exception\ConfigurationException;
 use League\StatsD\Exception\ConnectionException;
@@ -14,19 +16,24 @@ class LeagueStatsDClient implements StatsDClient, TagNormalizerAware
 {
     use TagNormalizerAwareTrait;
 
-    public function __construct(private readonly LeagueStatsDClientInterface $leagueStatsDClient)
-    {
+    public function __construct(
+        protected readonly LeagueStatsDClientInterface $leagueStatsDClient,
+        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider
+    ) {
     }
 
     /**
      * @throws ConfigurationException
      */
-    public static function fromConfig(array $config, string $instanceName = 'default'): static
-    {
+    public static function fromConfig(
+        array $config,
+        string $instanceName = 'default',
+        ?SampleRateSendDeciderInterface $sampleRateSendDecider = null
+    ): static {
         $instance = Client::instance($instanceName);
         $instance->configure($config);
 
-        return new static($instance);
+        return new static($instance, $sampleRateSendDecider ?? new SampleRateSendDecider());
     }
 
     /**
@@ -34,7 +41,7 @@ class LeagueStatsDClient implements StatsDClient, TagNormalizerAware
      */
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
-        if (! $this->shouldRecord($sampleRate)) {
+        if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
         }
 
@@ -46,7 +53,7 @@ class LeagueStatsDClient implements StatsDClient, TagNormalizerAware
      */
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        if (! $this->shouldRecord($sampleRate)) {
+        if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
         }
 
@@ -68,7 +75,7 @@ class LeagueStatsDClient implements StatsDClient, TagNormalizerAware
      */
     public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        if (! $this->shouldRecord($sampleRate)) {
+        if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
         }
 
@@ -99,16 +106,8 @@ class LeagueStatsDClient implements StatsDClient, TagNormalizerAware
         $this->increment($stats, $sampleRate, $tags, $delta);
     }
 
-    protected function shouldRecord(float $sampleRate): bool
+    public function getClient(): LeagueStatsDClientInterface
     {
-        if ($sampleRate >= 1) {
-            return true;
-        }
-
-        if ((mt_rand() / mt_getrandmax()) <= $sampleRate) {
-            return true;
-        }
-
-        return false;
+        return $this->leagueStatsDClient;
     }
 }

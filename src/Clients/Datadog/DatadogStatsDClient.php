@@ -61,4 +61,9 @@ class DatadogStatsDClient implements StatsDClient, TagNormalizerAware
     {
         $this->datadogClient->updateStats($stats, $delta, $sampleRate, $this->normalizeTags($tags));
     }
+
+    public function getClient(): DogStatsd
+    {
+        return $this->datadogClient;
+    }
 }

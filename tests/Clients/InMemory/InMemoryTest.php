@@ -62,6 +62,19 @@ class InMemoryTest extends BaseTestCase
         $this->assertEqualsCanonicalizing([["my-tags" => "are-here"]], $tagNormalizerSpy->getNormalizeCalls());
     }
 
+    #[Test]
+    public function getClient_returnsNull()
+    {
+        // Given
+        $inMemoryClient = new InMemoryClient(new ClockStub(new DateTimeImmutable()));
+
+        // When
+        $client = $inMemoryClient->getClient();
+
+        // Then
+        self::assertNull($client);
+    }
+
     private static function assertEachRecordWithinStatsRecordIsEmpty(InMemoryStatsRecord $record): void
     {
         self::assertEmpty($record->distribution);

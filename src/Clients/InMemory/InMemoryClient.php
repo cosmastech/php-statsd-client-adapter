@@ -105,7 +105,13 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
         $now = $this->clock->now();
 
         foreach ($stats as $stat) {
-            $this->stats->count[] = new InMemoryCountRecord($stat, $delta, $sampleRate, $this->normalizeTags($tags), $now);
+            $this->stats->count[] = new InMemoryCountRecord(
+                $stat,
+                $delta,
+                $sampleRate,
+                $this->normalizeTags($tags),
+                $now
+            );
         }
     }
 
@@ -117,5 +123,10 @@ class InMemoryClient implements StatsDClient, TagNormalizerAware
     public function reset(): void
     {
         $this->stats = new InMemoryStatsRecord();
+    }
+
+    public function getClient(): null
+    {
+        return null;
     }
 }
