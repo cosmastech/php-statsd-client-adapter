@@ -19,4 +19,6 @@ interface StatsDClient
     public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void;
 
     public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, $tags = null): void;
+
+    public function getClient(): mixed;
 }
