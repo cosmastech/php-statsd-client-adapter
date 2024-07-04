@@ -12,20 +12,20 @@
   "require": {
     "php": "^8.2",
     "datadog/php-datadogstatsd": "^1.6.1",
-    "psr/clock": "^1.0.0"
+    "psr/clock": "^1.0.0",
+    "psr/log": "3.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^11.2.5",
     "friendsofphp/php-cs-fixer": "^3.59",
     "league/statsd": "^2.0.0",
-    "cosmastech/psr-logger-spy": "^0.0.1",
-    "psr/log": "3.0.0"
+    "cosmastech/psr-logger-spy": "^0.0.1"
   },
   "suggest": {
     "datadog/php-datadogstatsd": "For DataDog stats",
     "nesbot/carbon": "For using Carbon as psr/clock-implementation",
     "league/statsd": "For generic statsd clients",
-    "monolog/monolog": "For log client"
+    "monolog/monolog": "For psr log implementation"
   },
   "autoload": {
     "psr-4": {
