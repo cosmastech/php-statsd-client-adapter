@@ -49,8 +49,4 @@ class DatadogLoggingClientTest extends BaseTestCase
             "emergency" => [LogLevel::EMERGENCY],
         ];
     }
-
-
-    // @todo
-
 }
