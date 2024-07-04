@@ -12,7 +12,7 @@
   "require": {
     "php": "^8.2",
     "datadog/php-datadogstatsd": "^1.6.1",
-    "psr/clock-implementation": "1.0"
+    "psr/clock-implementation": "^1.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^11.2.5",
