@@ -2,9 +2,10 @@
 
 namespace Cosmastech\StatsDClient\Tests\Datadog;
 
+use Cosmastech\PsrLoggerSpy\LogFactory;
+use Cosmastech\PsrLoggerSpy\LoggerSpy;
 use Cosmastech\StatsDClient\Datadog\DatadogLoggingClient;
 use Cosmastech\StatsDClient\Tests\BaseTestCase;
-use Cosmastech\StatsDClient\Tests\Doubles\LoggerSpy;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
@@ -15,7 +16,7 @@ class DatadogLoggingClientTest extends BaseTestCase
 
     public function setUp(): void
     {
-        $this->loggerSpy = new LoggerSpy();
+        $this->loggerSpy = new LoggerSpy(new LogFactory());
     }
 
     #[Test]
@@ -32,7 +33,7 @@ class DatadogLoggingClientTest extends BaseTestCase
         $logs = $this->loggerSpy->getLogs();
 
         self::assertCount(1, $logs);
-        self::assertEquals($logLevel, $logs[0]["level"]);
+        self::assertEquals($logLevel, $logs[0]->getLevel()->value);
     }
 
     public static function logLevelsDataProvider(): array
@@ -48,6 +49,8 @@ class DatadogLoggingClientTest extends BaseTestCase
             "emergency" => [LogLevel::EMERGENCY],
         ];
     }
+
+
     // @todo
 
 }

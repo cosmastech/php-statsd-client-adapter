@@ -17,7 +17,8 @@
     "phpunit/phpunit": "^11.2.5",
     "nesbot/carbon": "^3.6.0",
     "friendsofphp/php-cs-fixer": "^3.59",
-    "league/statsd": "^2.0.0"
+    "league/statsd": "^2.0.0",
+    "cosmastech/psr-logger-spy": "^0.0.1"
   },
   "suggest": {
     "datadog/php-datadogstatsd": "For DataDog stats",
