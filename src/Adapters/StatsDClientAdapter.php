@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Adapters;
+namespace Cosmastech\StatsDClientAdapter\Adapters;
 
 interface StatsDClientAdapter
 {

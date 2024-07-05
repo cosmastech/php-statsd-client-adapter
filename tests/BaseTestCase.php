@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests;
+namespace Cosmastech\StatsDClientAdapter\Tests;
 
 use PHPUnit\Framework\TestCase;
 

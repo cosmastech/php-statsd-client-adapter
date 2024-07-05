@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\TagNormalizers\Enums;
+namespace Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums;
 
 enum UnbackedEnum
 {

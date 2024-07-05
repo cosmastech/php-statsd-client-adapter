@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\Doubles;
+namespace Cosmastech\StatsDClientAdapter\Tests\Doubles;
 
 use DateTimeImmutable;
 use InvalidArgumentException;

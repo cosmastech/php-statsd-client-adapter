@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Clients\Datadog;
+namespace Cosmastech\StatsDClientAdapter\Clients\Datadog;
 
 use DataDog\DogStatsd;
 use Psr\Log\LoggerInterface;

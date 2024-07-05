@@ -1,8 +1,8 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\Doubles;
+namespace Cosmastech\StatsDClientAdapter\Tests\Doubles;
 
-use Cosmastech\StatsDClient\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
 
 class TagNormalizerSpy implements TagNormalizer
 {

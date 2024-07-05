@@ -1,18 +1,18 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Adapters\InMemory;
+namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory;
 
-use Cosmastech\StatsDClient\Adapters\Concerns\TagNormalizerAwareTrait;
-use Cosmastech\StatsDClient\Adapters\Contracts\TagNormalizerAware;
-use Cosmastech\StatsDClient\Adapters\InMemory\Models\InMemoryCountRecord;
-use Cosmastech\StatsDClient\Adapters\InMemory\Models\InMemoryDistributionRecord;
-use Cosmastech\StatsDClient\Adapters\InMemory\Models\InMemoryGaugeRecord;
-use Cosmastech\StatsDClient\Adapters\InMemory\Models\InMemoryHistogramRecord;
-use Cosmastech\StatsDClient\Adapters\InMemory\Models\InMemorySetRecord;
-use Cosmastech\StatsDClient\Adapters\InMemory\Models\InMemoryStatsRecord;
-use Cosmastech\StatsDClient\Adapters\InMemory\Models\InMemoryTimingRecord;
-use Cosmastech\StatsDClient\Adapters\StatsDClientAdapter;
-use Cosmastech\StatsDClient\TagNormalizers\NoopTagNormalizer;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryCountRecord;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryDistributionRecord;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryGaugeRecord;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryHistogramRecord;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemorySetRecord;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryTimingRecord;
+use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Psr\Clock\ClockInterface;
 
 class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware

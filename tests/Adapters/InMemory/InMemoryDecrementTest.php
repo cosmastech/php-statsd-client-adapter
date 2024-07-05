@@ -1,11 +1,11 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\Adapters\InMemory;
+namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 
-use Cosmastech\StatsDClient\Adapters\InMemory\InMemoryClientAdapter;
-use Cosmastech\StatsDClient\Tests\BaseTestCase;
-use Cosmastech\StatsDClient\Tests\Doubles\ClockStub;
-use Cosmastech\StatsDClient\Tests\Doubles\TagNormalizerSpy;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
+use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
+use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\Adapters\League;
+namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\League;
 
-use Cosmastech\StatsDClient\Adapters\League\LeagueStatsDClientAdapter;
-use Cosmastech\StatsDClient\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Adapters\League\LeagueStatsDClientAdapter;
+use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use League\StatsD\StatsDClient;
 use PHPUnit\Framework\Attributes\Test;
 

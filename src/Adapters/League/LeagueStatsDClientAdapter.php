@@ -1,12 +1,12 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Adapters\League;
+namespace Cosmastech\StatsDClientAdapter\Adapters\League;
 
-use Cosmastech\StatsDClient\Adapters\Concerns\TagNormalizerAwareTrait;
-use Cosmastech\StatsDClient\Adapters\Contracts\TagNormalizerAware;
-use Cosmastech\StatsDClient\Adapters\StatsDClientAdapter;
-use Cosmastech\StatsDClient\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
-use Cosmastech\StatsDClient\Utility\SampleRateDecider\SampleRateSendDecider;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
+use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
+use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
+use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\SampleRateSendDecider;
 use League\StatsD\Client;
 use League\StatsD\Exception\ConfigurationException;
 use League\StatsD\Exception\ConnectionException;

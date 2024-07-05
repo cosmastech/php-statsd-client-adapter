@@ -1,8 +1,8 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Adapters\Contracts;
+namespace Cosmastech\StatsDClientAdapter\Adapters\Contracts;
 
-use Cosmastech\StatsDClient\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
 
 interface TagNormalizerAware
 {

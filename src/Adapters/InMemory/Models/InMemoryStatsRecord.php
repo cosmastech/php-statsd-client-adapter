@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Adapters\InMemory\Models;
+namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models;
 
 class InMemoryStatsRecord
 {

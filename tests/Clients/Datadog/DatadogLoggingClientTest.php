@@ -1,11 +1,11 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\Clients\Datadog;
+namespace Cosmastech\StatsDClientAdapter\Tests\Clients\Datadog;
 
 use Cosmastech\PsrLoggerSpy\LogFactory;
 use Cosmastech\PsrLoggerSpy\LoggerSpy;
-use Cosmastech\StatsDClient\Clients\Datadog\DatadogLoggingClient;
-use Cosmastech\StatsDClient\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Clients\Datadog\DatadogLoggingClient;
+use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;

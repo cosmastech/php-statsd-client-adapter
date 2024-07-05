@@ -1,8 +1,8 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Adapters\Concerns;
+namespace Cosmastech\StatsDClientAdapter\Adapters\Concerns;
 
-use Cosmastech\StatsDClient\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
 
 trait TagNormalizerAwareTrait
 {

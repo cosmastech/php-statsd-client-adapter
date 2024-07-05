@@ -1,11 +1,11 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Adapters\Datadog;
+namespace Cosmastech\StatsDClientAdapter\Adapters\Datadog;
 
-use Cosmastech\StatsDClient\Adapters\Concerns\TagNormalizerAwareTrait;
-use Cosmastech\StatsDClient\Adapters\Contracts\TagNormalizerAware;
-use Cosmastech\StatsDClient\Adapters\StatsDClientAdapter;
-use Cosmastech\StatsDClient\TagNormalizers\NoopTagNormalizer;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
+use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use DataDog\DogStatsd;
 
 class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware

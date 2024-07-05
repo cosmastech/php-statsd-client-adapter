@@ -1,9 +1,9 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\Utility\SampleRateDecider;
+namespace Cosmastech\StatsDClientAdapter\Tests\Utility\SampleRateDecider;
 
-use Cosmastech\StatsDClient\Tests\BaseTestCase;
-use Cosmastech\StatsDClient\Utility\SampleRateDecider\SampleRateSendDecider;
+use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\SampleRateSendDecider;
 use PHPUnit\Framework\Attributes\Test;
 
 class SampleRateSendDeciderTest extends BaseTestCase
