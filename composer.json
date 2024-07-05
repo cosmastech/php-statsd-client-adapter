@@ -1,6 +1,6 @@
 {
-  "name": "cosmastech/statsd-client",
-  "description": "A StatsD client adapter",
+  "name": "cosmastech/statsd-client-adapter",
+  "description": "A StatsD client adapter for use with DataDog or PHPLeague's statsd clients",
   "license": "WTFPL",
   "authors": [
     {
