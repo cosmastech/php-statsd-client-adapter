@@ -12,14 +12,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
 {
     use TagNormalizerAwareTrait;
 
-    protected function __construct(protected readonly DogStatsd $datadogClient)
+    public function __construct(protected readonly DogStatsd $datadogClient)
     {
         $this->tagNormalizer = new NoopTagNormalizer();
-    }
-
-    public static function fromConfig(array $config): static
-    {
-        return new static(new DogStatsd($config));
     }
 
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
