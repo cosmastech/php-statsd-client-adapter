@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Utility\SampleRateDecider\Contracts;
+namespace Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts;
 
 interface SampleRateSendDecider
 {

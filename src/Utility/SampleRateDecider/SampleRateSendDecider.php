@@ -1,8 +1,8 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Utility\SampleRateDecider;
+namespace Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider;
 
-use Cosmastech\StatsDClient\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
+use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
 
 class SampleRateSendDecider implements SampleRateSendDeciderInterface
 {

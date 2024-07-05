@@ -1,11 +1,11 @@
 <?php
 
-namespace Cosmastech\StatsDClient\Tests\TagNormalizers;
+namespace Cosmastech\StatsDClientAdapter\Tests\TagNormalizers;
 
-use Cosmastech\StatsDClient\TagNormalizers\ConvertEnumNormalizer;
-use Cosmastech\StatsDClient\Tests\TagNormalizers\Enums\IntBackedEnum;
-use Cosmastech\StatsDClient\Tests\TagNormalizers\Enums\StringBackedEnum;
-use Cosmastech\StatsDClient\Tests\TagNormalizers\Enums\UnbackedEnum;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\ConvertEnumNormalizer;
+use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\IntBackedEnum;
+use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\StringBackedEnum;
+use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\UnbackedEnum;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

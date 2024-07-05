@@ -29,12 +29,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Cosmastech\\StatsDClient\\": "src"
+      "Cosmastech\\StatsDClientAdapter\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Cosmastech\\StatsDClient\\Tests\\": "tests"
+      "Cosmastech\\StatsDClientAdapter\\Tests\\": "tests"
     }
   },
   "scripts": {

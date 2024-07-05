@@ -1,6 +1,6 @@
 <?php
 
-namespace Cosmastech\StatsDClient\TagNormalizers;
+namespace Cosmastech\StatsDClientAdapter\TagNormalizers;
 
 use BackedEnum;
 use UnitEnum;
