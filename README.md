@@ -1,11 +1,12 @@
+[![Latest Stable Version](http://poser.pugx.org/cosmastech/statsd-client-adapter/v)](https://packagist.org/packages/cosmastech/statsd-client-adapter) [![Total Downloads](http://poser.pugx.org/cosmastech/statsd-client-adapter/downloads)](https://packagist.org/packages/cosmastech/statsd-client-adapter) [![Latest Unstable Version](http://poser.pugx.org/cosmastech/statsd-client-adapter/v/unstable)](https://packagist.org/packages/cosmastech/statsd-client-adapter) [![License](http://poser.pugx.org/cosmastech/statsd-client-adapter/license)](https://packagist.org/packages/cosmastech/statsd-client-adapter) [![PHP Version Require](http://poser.pugx.org/cosmastech/statsd-client-adapter/require/php)](https://packagist.org/packages/cosmastech/statsd-client-adapter)
 # StatsD Client Adapter
 This package was originally designed to solve the problem of:
 * I use DataDog on production, but
-* I don't want to push stats to DataDog on my dev environments
+* I don't want to push stats to DataDog on my dev or test environments
 
-Where might I want to push those precious stats? Maybe to a log? Maybe to a locally running [StatsD server](https://github.com/statsd/statsd)?
+Where might I want to push those precious stats? Maybe to a log? Maybe to a locally running [StatsD server](https://github.com/statsd/statsd)? What if in my unit tests, I want to confirm that logs are being pushed, but not go through the hassle of an integration test set up that configures the StatsD server?
 
-While [PHP League's statsd package](https://github.com/thephpleague/statsd) is great, it doesn't allow for sending stats to DataDog
+While [PHP League's statsd package](https://github.com/thephpleague/statsd) is great, it doesn't allow for sending DataDog specific stats 
 (such as [histogram](https://docs.datadoghq.com/metrics/types/?tab=histogram) or [distribution](https://docs.datadoghq.com/metrics/types/?tab=distribution)).
 Nor does the DataDog client allow for pushing to another StatsD implementation easily.
 
