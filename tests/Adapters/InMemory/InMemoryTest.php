@@ -5,9 +5,7 @@ namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
-use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
-use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 
 class InMemoryTest extends BaseTestCase
@@ -16,7 +14,7 @@ class InMemoryTest extends BaseTestCase
     public function getStats_returnsInMemoryStatsRecord(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter();
 
         // When
         $record = $inMemoryClient->getStats();
@@ -30,7 +28,7 @@ class InMemoryTest extends BaseTestCase
     public function reset_clearsStats(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter();
 
         // And set some data
         $inMemoryClient->increment("bogus", 1, ["tag1" => true], 99);
@@ -49,7 +47,7 @@ class InMemoryTest extends BaseTestCase
     public function setTagNormalizer(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter();
 
         // And
         $tagNormalizerSpy = new TagNormalizerSpy();
@@ -66,7 +64,7 @@ class InMemoryTest extends BaseTestCase
     public function getClient_returnsNull(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter();
 
         // When
         $client = $inMemoryClient->getClient();
