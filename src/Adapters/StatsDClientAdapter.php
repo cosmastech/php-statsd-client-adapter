@@ -21,4 +21,15 @@ interface StatsDClientAdapter
     public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, $tags = null): void;
 
     public function getClient(): mixed;
+
+    /**
+     * @param  array<string, mixed>  $tags
+     * @return void
+     */
+    public function setDefaultTags(array $tags = []): void;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getDefaultTags(): array;
 }

@@ -2,6 +2,7 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory;
 
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\SetDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryCountRecord;
@@ -17,6 +18,7 @@ use Psr\Clock\ClockInterface;
 
 class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
+    use SetDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
     protected InMemoryStatsRecord $stats;
@@ -36,7 +38,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $durationMs,
             $sampleRate,
-            $this->normalizeTags($tags),
+            $this->normalizeTags($this->mergeTags($tags)),
             $this->clock->now()
         );
     }
@@ -47,7 +49,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($tags),
+            $this->normalizeTags($this->mergeTags($tags)),
             $this->clock->now()
         );
     }
@@ -58,7 +60,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($tags),
+            $this->normalizeTags($this->mergeTags($tags)),
             $this->clock->now()
         );
     }
@@ -69,7 +71,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($tags),
+            $this->normalizeTags($this->mergeTags($tags)),
             $this->clock->now()
         );
     }
@@ -80,7 +82,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($tags),
+            $this->normalizeTags($this->mergeTags($tags)),
             $this->clock->now()
         );
     }
@@ -109,7 +111,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
                 $stat,
                 $delta,
                 $sampleRate,
-                $this->normalizeTags($tags),
+                $this->normalizeTags($this->mergeTags($tags)),
                 $now
             );
         }
