@@ -22,7 +22,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
 
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->datadogClient->timing($stat, $durationMs, $sampleRate, $this->normalizeTags($this->mergeTags($tags)));
+        $this->datadogClient->timing(
+            $stat,
+            $durationMs,
+            $sampleRate,
+            $this->normalizeTags($this->mergeTags($tags))
+        );
     }
 
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
