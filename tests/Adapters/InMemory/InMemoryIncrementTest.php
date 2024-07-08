@@ -72,10 +72,8 @@ class InMemoryIncrementTest extends BaseTestCase
     public function withDefaultTags_mergesTags(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
-
-        // And
-        $inMemoryClient->withDefaultTags(["abc" => 123]);
+        $defaultTags = ["abc" => 123];
+        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()), $defaultTags);
 
         // When
         $inMemoryClient->increment("some-stat", tags: ["hello" => "world"]);

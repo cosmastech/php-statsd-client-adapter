@@ -59,10 +59,8 @@ class InMemoryHistogramTest extends BaseTestCase
     public function withDefaultTags_mergesTags(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
-
-        // And
-        $inMemoryClient->withDefaultTags(["abc" => 123]);
+        $defaultTags = ["abc" => 123];
+        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()), $defaultTags);
 
         // When
         $inMemoryClient->histogram(stat: "some-stat", value: 1.2, tags: ["hello" => "world"]);

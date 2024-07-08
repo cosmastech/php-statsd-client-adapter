@@ -2,8 +2,8 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\Datadog;
 
-use Cosmastech\StatsDClientAdapter\Adapters\Concerns\SetDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\WithDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
@@ -11,12 +11,13 @@ use DataDog\DogStatsd;
 
 class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
-    use SetDefaultTagsTrait;
+    use WithDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
-    public function __construct(protected readonly DogStatsd $datadogClient)
+    public function __construct(protected readonly DogStatsd $datadogClient, array $defaultTags = [])
     {
         $this->tagNormalizer = new NoopTagNormalizer();
+        $this->withDefaultTags($defaultTags);
     }
 
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void

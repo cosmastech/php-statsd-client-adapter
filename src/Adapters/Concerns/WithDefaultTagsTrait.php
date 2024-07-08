@@ -2,17 +2,9 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\Concerns;
 
-trait SetDefaultTagsTrait
+trait WithDefaultTagsTrait
 {
     protected array $defaultTags = [];
-
-    /**
-     * @inheritDoc
-     */
-    public function withDefaultTags(array $defaultTags = []): void
-    {
-        $this->defaultTags = $defaultTags;
-    }
 
     /**
      * @inheritDoc
@@ -24,10 +16,19 @@ trait SetDefaultTagsTrait
 
     /**
      * @param  array<string, mixed>  $tags
+     * @return void
+     */
+    protected function withDefaultTags(array $defaultTags = []): void
+    {
+        $this->defaultTags = $defaultTags;
+    }
+
+    /**
+     * @param  array<string, mixed>  $tags
      * @return array<string, mixed>
      */
     protected function mergeTags(array $tags): array
     {
-        return array_merge($this->defaultTags, $tags);
+        return array_merge($this->getDefaultTags(), $tags);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\League;
 
-use Cosmastech\StatsDClientAdapter\Adapters\Concerns\SetDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\WithDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
@@ -15,13 +15,15 @@ use League\StatsD\StatsDClient as LeagueStatsDClientInterface;
 
 class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
-    use SetDefaultTagsTrait;
+    use WithDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
     public function __construct(
         protected readonly LeagueStatsDClientInterface $leagueStatsDClient,
-        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider
+        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider,
+        array $defaultTags = [],
     ) {
+        $this->withDefaultTags($defaultTags);
     }
 
     /**
@@ -30,12 +32,17 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     public static function fromConfig(
         array $config,
         string $instanceName = 'default',
-        ?SampleRateSendDeciderInterface $sampleRateSendDecider = null
+        ?SampleRateSendDeciderInterface $sampleRateSendDecider = null,
+        array $defaultTags = []
     ): static {
         $instance = Client::instance($instanceName);
         $instance->configure($config);
 
-        return new static($instance, $sampleRateSendDecider ?? new SampleRateSendDecider());
+        return new self(
+            $instance,
+            $sampleRateSendDecider ?? new SampleRateSendDecider(),
+            $defaultTags
+        );
     }
 
     /**

@@ -23,12 +23,6 @@ interface StatsDClientAdapter
     public function getClient(): mixed;
 
     /**
-     * @param  array<string, mixed>  $tags
-     * @return void
-     */
-    public function withDefaultTags(array $tags = []): void;
-
-    /**
      * @return array<string, mixed>
      */
     public function getDefaultTags(): array;
