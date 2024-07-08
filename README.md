@@ -15,3 +15,9 @@ The aim here is to allow for a single interface that can wrap around both, and b
 ## Gotchas
 1. Only increment/decrement on PHPLeague's implementation allow for including the sample rate. If you are using a sample rate with other calls, their sample rate will not be included as part of the stat.
 2. There are `histogram()` and `distribution()` methods on `LeagueStatsDClientAdapter`, but they only raise a PHP error and are no-op.
+
+## Adapters
+### InMemoryClientAdapter
+This adapter simply records your stats in an object in memory. This is best served as a way to verify stats are recorded in your unit tests.
+
+See [examples/in_memory.php](examples/in_memory.php) for you might implement this.
