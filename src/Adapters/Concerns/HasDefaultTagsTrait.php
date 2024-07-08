@@ -2,7 +2,7 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\Concerns;
 
-trait WithDefaultTagsTrait
+trait HasDefaultTagsTrait
 {
     protected array $defaultTags = [];
 
@@ -18,7 +18,7 @@ trait WithDefaultTagsTrait
      * @param  array<string, mixed>  $tags
      * @return void
      */
-    protected function withDefaultTags(array $defaultTags = []): void
+    protected function setDefaultTags(array $defaultTags = []): void
     {
         $this->defaultTags = $defaultTags;
     }

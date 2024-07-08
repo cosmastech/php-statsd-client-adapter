@@ -2,8 +2,8 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory;
 
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
-use Cosmastech\StatsDClientAdapter\Adapters\Concerns\WithDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryCountRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryDistributionRecord;
@@ -18,7 +18,7 @@ use Psr\Clock\ClockInterface;
 
 class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
-    use WithDefaultTagsTrait;
+    use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
     protected InMemoryStatsRecord $stats;
@@ -30,7 +30,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 
         $this->reset();
         $this->setTagNormalizer(new NoopTagNormalizer());
-        $this->withDefaultTags($defaultTags);
+        $this->setDefaultTags($defaultTags);
     }
 
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void

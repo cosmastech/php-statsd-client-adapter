@@ -2,8 +2,8 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\League;
 
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
-use Cosmastech\StatsDClientAdapter\Adapters\Concerns\WithDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
@@ -15,7 +15,7 @@ use League\StatsD\StatsDClient as LeagueStatsDClientInterface;
 
 class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
-    use WithDefaultTagsTrait;
+    use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
     public function __construct(
@@ -23,7 +23,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider,
         array $defaultTags = [],
     ) {
-        $this->withDefaultTags($defaultTags);
+        $this->setDefaultTags($defaultTags);
     }
 
     /**
