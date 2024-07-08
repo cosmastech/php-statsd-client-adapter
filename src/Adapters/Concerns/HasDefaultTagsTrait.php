@@ -15,10 +15,9 @@ trait HasDefaultTagsTrait
     }
 
     /**
-     * @param  array<string, mixed>  $tags
-     * @return void
+     * @inheritDoc
      */
-    protected function setDefaultTags(array $defaultTags = []): void
+    public function setDefaultTags(array $defaultTags = []): void
     {
         $this->defaultTags = $defaultTags;
     }
