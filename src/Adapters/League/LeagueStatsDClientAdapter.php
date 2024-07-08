@@ -2,6 +2,7 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\League;
 
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
@@ -14,12 +15,15 @@ use League\StatsD\StatsDClient as LeagueStatsDClientInterface;
 
 class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
+    use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
     public function __construct(
         protected readonly LeagueStatsDClientInterface $leagueStatsDClient,
-        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider
+        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider,
+        array $defaultTags = [],
     ) {
+        $this->setDefaultTags($defaultTags);
     }
 
     /**
@@ -28,12 +32,17 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     public static function fromConfig(
         array $config,
         string $instanceName = 'default',
-        ?SampleRateSendDeciderInterface $sampleRateSendDecider = null
+        ?SampleRateSendDeciderInterface $sampleRateSendDecider = null,
+        array $defaultTags = []
     ): static {
         $instance = Client::instance($instanceName);
         $instance->configure($config);
 
-        return new static($instance, $sampleRateSendDecider ?? new SampleRateSendDecider());
+        return new self(
+            $instance,
+            $sampleRateSendDecider ?? new SampleRateSendDecider(),
+            $defaultTags
+        );
     }
 
     /**
@@ -45,7 +54,11 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
             return;
         }
 
-        $this->leagueStatsDClient->timing($stat, $durationMs, $this->normalizeTags($tags));
+        $this->leagueStatsDClient->timing(
+            $stat,
+            $durationMs,
+            $this->normalizeTags($this->mergeTags($tags))
+        );
     }
 
     /**
@@ -57,7 +70,11 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
             return;
         }
 
-        $this->leagueStatsDClient->gauge($stat, $value, $tags);
+        $this->leagueStatsDClient->gauge(
+            $stat,
+            $value,
+            $this->normalizeTags($this->mergeTags($tags))
+        );
     }
 
     public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
@@ -79,7 +96,11 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
             return;
         }
 
-        $this->leagueStatsDClient->set($stat, $value, $tags);
+        $this->leagueStatsDClient->set(
+            $stat,
+            $value,
+            $this->normalizeTags($this->mergeTags($tags))
+        );
     }
 
     /**
@@ -87,7 +108,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      */
     public function increment(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
     {
-        $this->leagueStatsDClient->increment($stats, $value, $sampleRate, $tags);
+        $this->leagueStatsDClient->increment(
+            $stats,
+            $value,
+            $sampleRate,
+            $this->normalizeTags($this->mergeTags($tags))
+        );
     }
 
     /**
@@ -95,7 +121,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      */
     public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
     {
-        $this->leagueStatsDClient->decrement($stats, $value, $sampleRate, $tags);
+        $this->leagueStatsDClient->decrement(
+            $stats,
+            $value,
+            $sampleRate,
+            $this->normalizeTags($this->mergeTags($tags))
+        );
     }
 
     /**
@@ -103,7 +134,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      */
     public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, $tags = null): void
     {
-        $this->increment($stats, $sampleRate, $tags, $delta);
+        $this->increment(
+            $stats,
+            $sampleRate,
+            $this->normalizeTags($this->mergeTags($tags)),
+            $delta
+        );
     }
 
     public function getClient(): LeagueStatsDClientInterface

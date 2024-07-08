@@ -10,7 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 class LeagueStatsDClientTest extends BaseTestCase
 {
     #[Test]
-    public function getClient_returnsLeagueStatsDClient()
+    public function getClient_returnsLeagueStatsDClient(): void
     {
         // Given
         $leagueStatsDClient = LeagueStatsDClientAdapter::fromConfig([]);
