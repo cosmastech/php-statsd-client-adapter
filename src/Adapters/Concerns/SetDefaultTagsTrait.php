@@ -9,7 +9,7 @@ trait SetDefaultTagsTrait
     /**
      * @inheritDoc
      */
-    public function setDefaultTags(array $defaultTags = []): void
+    public function withDefaultTags(array $defaultTags = []): void
     {
         $this->defaultTags = $defaultTags;
     }

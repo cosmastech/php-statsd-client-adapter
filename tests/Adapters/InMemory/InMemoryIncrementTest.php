@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\Test;
 class InMemoryIncrementTest extends BaseTestCase
 {
     #[Test]
-    public function recordsCountRecord()
+    public function recordsCountRecord(): void
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2024-01-19 00:00:00");
@@ -38,7 +38,7 @@ class InMemoryIncrementTest extends BaseTestCase
     }
 
     #[Test]
-    public function recordsTags()
+    public function recordsTags(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -52,7 +52,7 @@ class InMemoryIncrementTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags()
+    public function normalizesTags(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -66,5 +66,22 @@ class InMemoryIncrementTest extends BaseTestCase
 
         // Then
         $this->assertEqualsCanonicalizing([["hello" => "world"]], $tagNormalizerSpy->getNormalizeCalls());
+    }
+
+    #[Test]
+    public function withDefaultTags_mergesTags(): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+
+        // And
+        $inMemoryClient->withDefaultTags(["abc" => 123]);
+
+        // When
+        $inMemoryClient->increment("some-stat", tags: ["hello" => "world"]);
+
+        // Then
+        $countStat = $inMemoryClient->getStats()->count[0];
+        self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $countStat->tags);
     }
 }

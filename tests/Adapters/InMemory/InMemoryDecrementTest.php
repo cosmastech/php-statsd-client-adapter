@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 class InMemoryDecrementTest extends BaseTestCase
 {
     #[Test]
-    public function recordsCountRecord()
+    public function recordsCountRecord(): void
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2024-02-18 14:22:19");
@@ -34,7 +34,7 @@ class InMemoryDecrementTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags()
+    public function normalizesTags(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -51,7 +51,7 @@ class InMemoryDecrementTest extends BaseTestCase
     }
 
     #[Test]
-    public function positiveValue_convertsToANegativeNumber()
+    public function positiveValue_convertsToANegativeNumber(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -62,5 +62,22 @@ class InMemoryDecrementTest extends BaseTestCase
         // Then
         $countStat = $inMemoryClient->getStats()->count[0];
         self::assertEquals(-1845, $countStat->count);
+    }
+
+    #[Test]
+    public function withDefaultTags_mergesTags(): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+
+        // And
+        $inMemoryClient->withDefaultTags(["abc" => 123]);
+
+        // When
+        $inMemoryClient->decrement("some-stat", tags: ["hello" => "world"]);
+
+        // Then
+        $countStat = $inMemoryClient->getStats()->count[0];
+        self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $countStat->tags);
     }
 }

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 class InMemoryHistogramTest extends BaseTestCase
 {
     #[Test]
-    public function storesHistogramRecord()
+    public function storesHistogramRecord(): void
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2018-02-13 18:50:00");
@@ -39,7 +39,7 @@ class InMemoryHistogramTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags()
+    public function normalizesTags(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -53,5 +53,22 @@ class InMemoryHistogramTest extends BaseTestCase
 
         // Then
         $this->assertEqualsCanonicalizing([["hello" => "world"]], $tagNormalizerSpy->getNormalizeCalls());
+    }
+
+    #[Test]
+    public function withDefaultTags_mergesTags(): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+
+        // And
+        $inMemoryClient->withDefaultTags(["abc" => 123]);
+
+        // When
+        $inMemoryClient->histogram(stat: "some-stat", value: 1.2, tags: ["hello" => "world"]);
+
+        // Then
+        $histogramStat = $inMemoryClient->getStats()->histogram[0];
+        self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $histogramStat->tags);
     }
 }

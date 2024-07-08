@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 class InMemoryGaugeTest extends BaseTestCase
 {
     #[Test]
-    public function storesGaugeRecord()
+    public function storesGaugeRecord(): void
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2018-02-13 18:50:00");
@@ -34,7 +34,7 @@ class InMemoryGaugeTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags()
+    public function normalizesTags(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -48,5 +48,22 @@ class InMemoryGaugeTest extends BaseTestCase
 
         // Then
         $this->assertEqualsCanonicalizing([["hello" => "world"]], $tagNormalizerSpy->getNormalizeCalls());
+    }
+
+    #[Test]
+    public function withDefaultTags_mergesTags(): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+
+        // And
+        $inMemoryClient->withDefaultTags(["abc" => 123]);
+
+        // When
+        $inMemoryClient->gauge("some-stat", value: 1.1, tags: ["hello" => "world"]);
+
+        // Then
+        $gaugeStat = $inMemoryClient->getStats()->gauge[0];
+        self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $gaugeStat->tags);
     }
 }

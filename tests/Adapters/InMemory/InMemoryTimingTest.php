@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 class InMemoryTimingTest extends BaseTestCase
 {
     #[Test]
-    public function storesTimingRecord()
+    public function storesTimingRecord(): void
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2019-02-13 07:56:00");
@@ -34,7 +34,7 @@ class InMemoryTimingTest extends BaseTestCase
     }
 
     #[Test]
-    public function normalizesTags()
+    public function normalizesTags(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -48,5 +48,22 @@ class InMemoryTimingTest extends BaseTestCase
 
         // Then
         $this->assertEqualsCanonicalizing([["hello" => "world"]], $tagNormalizerSpy->getNormalizeCalls());
+    }
+
+    #[Test]
+    public function withDefaultTags_mergesTags(): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+
+        // And
+        $inMemoryClient->withDefaultTags(["abc" => 123]);
+
+        // When
+        $inMemoryClient->timing(stat: "some-stat", durationMs: 1, tags: ["hello" => "world"]);
+
+        // Then
+        $timingStat = $inMemoryClient->getStats()->timing[0];
+        self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $timingStat->tags);
     }
 }

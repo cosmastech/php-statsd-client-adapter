@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\Test;
 class InMemoryTest extends BaseTestCase
 {
     #[Test]
-    public function getStats_returnsInMemoryStatsRecord()
+    public function getStats_returnsInMemoryStatsRecord(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -27,7 +27,7 @@ class InMemoryTest extends BaseTestCase
     }
 
     #[Test]
-    public function reset_clearsStats()
+    public function reset_clearsStats(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -46,7 +46,7 @@ class InMemoryTest extends BaseTestCase
     }
 
     #[Test]
-    public function setTagNormalizer()
+    public function setTagNormalizer(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
@@ -63,7 +63,7 @@ class InMemoryTest extends BaseTestCase
     }
 
     #[Test]
-    public function getClient_returnsNull()
+    public function getClient_returnsNull(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
