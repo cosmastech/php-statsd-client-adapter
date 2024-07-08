@@ -22,8 +22,25 @@ The aim here is to allow for a single interface that can wrap around both, and b
 ### InMemoryClientAdapter
 This adapter simply records your stats in an object in memory. This is best served as a way to verify stats are recorded in your unit tests.
 
-See [examples/in_memory.php](examples/in_memory.php) for you might implement this.
+See [examples/in_memory.php](examples/in_memory.php) for how you might implement this.
 
 ### DataDogStatsDClientAdapter
 This is a wrapper around DataDog's [php-datadogstatsd](https://github.com/dataDog/php-datadogstatsd/) client.
+
+If you wish to use this adapter, please make sure you install the php-datadogstatsd client.
+
+```shell
+composer require datadog/php-datadogstatsd
+```
+
 For specifics on their configuration, see the [official DogStatsD documentation](https://docs.datadoghq.com/developers/dogstatsd/?code-lang=php&tab=hostagent#client-instantiation-parameters).
+
+See [examples/datadog.php](examples/datadog.php) for you might implement this.
+
+### DatadogLoggingClient
+Envisioned as a client for local development, this adapter writes to a class which implements the [psr-logger interface](https://packagist.org/packages/psr/log).
+You can find a [list](https://packagist.org/providers/psr/log-implementation) of packages that implement the interface on packagist.
+If you are using a framework like Symfony or Laravel, then you already have one of the most popular and reliable implementations installed: [monolog/monolog](https://github.com/Seldaek/monolog).
+
+For a local development setup, you could just write the stats to a log. This writes the format exactly as it would be sent to DataDog.
+
