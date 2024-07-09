@@ -6,6 +6,13 @@ use DateTimeImmutable;
 
 class InMemoryCountRecord
 {
+    /**
+     * @param  string  $stat
+     * @param  int  $count
+     * @param  float  $sampleRate
+     * @param  array<mixed, mixed>  $tags
+     * @param  DateTimeImmutable  $recordedAt
+     */
     public function __construct(
         public string $stat,
         public int $count,

@@ -79,13 +79,13 @@ interface StatsDClientAdapter
     public function getClient(): mixed;
 
     /**
-     * @param  array<string, mixed>  $defaultTags
+     * @param  array<mixed, mixed>  $defaultTags
      * @return void
      */
     public function setDefaultTags(array $defaultTags = []): void;
 
     /**
-     * @return array<string, mixed>
+     * @return array<mixed, mixed>
      */
     public function getDefaultTags(): array;
 }

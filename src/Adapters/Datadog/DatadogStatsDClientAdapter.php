@@ -14,6 +14,10 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
+    /**
+     * @param  DogStatsd  $datadogClient
+     * @param  array<mixed, mixed>  $defaultTags
+     */
     public function __construct(protected readonly DogStatsd $datadogClient, array $defaultTags = [])
     {
         $this->tagNormalizer = new NoopTagNormalizer();

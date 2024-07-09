@@ -25,6 +25,10 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     protected InMemoryStatsRecord $stats;
     protected readonly ClockInterface $clock;
 
+    /**
+     * @param  ClockInterface  $clock
+     * @param  array<mixed, mixed>  $defaultTags
+     */
     public function __construct(ClockInterface $clock = new Clock(), array $defaultTags = [])
     {
         $this->clock = $clock;
@@ -34,6 +38,9 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         $this->setDefaultTags($defaultTags);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->timing[] = new InMemoryTimingRecord(
@@ -45,6 +52,9 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->gauge[] = new InMemoryGaugeRecord(

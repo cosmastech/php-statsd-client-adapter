@@ -47,7 +47,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      * @param  string  $instanceName
      * @param  SampleRateSendDeciderInterface|null  $sampleRateSendDecider
      * @param  array<mixed, mixed>  $defaultTags
-     * @return static
+     * @return self
      *
      * @throws ConfigurationException
      */
@@ -56,7 +56,8 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         string $instanceName = 'default',
         ?SampleRateSendDeciderInterface $sampleRateSendDecider = null,
         array $defaultTags = []
-    ): static {
+    ): self {
+        /** @var Client $instance */
         $instance = Client::instance($instanceName);
         $instance->configure($config);
 
