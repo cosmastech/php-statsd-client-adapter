@@ -19,7 +19,8 @@
     "friendsofphp/php-cs-fixer": "^3.59",
     "league/statsd": "^2.0.0",
     "cosmastech/psr-logger-spy": "^0.0.2",
-    "datadog/php-datadogstatsd": "^1.6.1"
+    "datadog/php-datadogstatsd": "^1.6.1",
+    "phpstan/phpstan": "^1.11"
   },
   "suggest": {
     "datadog/php-datadogstatsd": "For DataDog stats",
@@ -40,6 +41,9 @@
   "scripts": {
     "test": "phpunit tests",
     "php-cs-fixer": "./vendor/bin/php-cs-fixer fix ./",
-    "php-cs-fixer-check": "./vendor/bin/php-cs-fixer check ./"
+    "php-cs-fixer-check": "./vendor/bin/php-cs-fixer check ./",
+    "static-analysis": [
+      "@php vendor/bin/phpstan analyse -c phpstan.neon"
+    ]
   }
 }
