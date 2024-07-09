@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 class SampleRateSendDeciderTest extends BaseTestCase
 {
     #[Test]
-    public function decide_sampleRateEquals1_returnsTrue()
+    public function decide_sampleRateEquals1_returnsTrue(): void
     {
         // Given
         $sampleRate = 1;
@@ -22,7 +22,7 @@ class SampleRateSendDeciderTest extends BaseTestCase
     }
 
     #[Test]
-    public function decide_sampleRateAbove1_returnsTrue()
+    public function decide_sampleRateAbove1_returnsTrue(): void
     {
         // Given
         $sampleRate = 1.01;
@@ -35,7 +35,7 @@ class SampleRateSendDeciderTest extends BaseTestCase
     }
 
     #[Test]
-    public function decide_sampleRateEquals0_returnsFalse()
+    public function decide_sampleRateEquals0_returnsFalse(): void
     {
         // Given
         $sampleRate = 0.0;
@@ -48,7 +48,7 @@ class SampleRateSendDeciderTest extends BaseTestCase
     }
 
     #[Test]
-    public function decide_sampleRateBelow0_returnsFalse()
+    public function decide_sampleRateBelow0_returnsFalse(): void
     {
         // Given
         $sampleRate = -110.0;
