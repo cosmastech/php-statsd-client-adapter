@@ -35,7 +35,7 @@ composer require datadog/php-datadogstatsd
 
 For specifics on their configuration, see the [official DogStatsD documentation](https://docs.datadoghq.com/developers/dogstatsd/?code-lang=php&tab=hostagent#client-instantiation-parameters).
 
-See [examples/datadog.php](examples/datadog.php) for you might implement this.
+See [examples/datadog.php](examples/datadog.php) for how you might implement this.
 
 ### DatadogLoggingClient
 Envisioned as a client for local development, this adapter writes to a class which implements the [psr-logger interface](https://packagist.org/packages/psr/log).
@@ -44,3 +44,4 @@ If you are using a framework like Symfony or Laravel, then you already have one 
 
 For a local development setup, you could just write the stats to a log. This writes the format exactly as it would be sent to DataDog.
 
+See [examples/log_datadog.php](examples/log_datadog.php) for how you might implement this.

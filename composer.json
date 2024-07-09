@@ -11,7 +11,6 @@
   ],
   "require": {
     "php": "^8.2",
-    "datadog/php-datadogstatsd": "^1.6.1",
     "psr/clock": "^1.0.0",
     "psr/log": "^3.0.0"
   },
@@ -19,7 +18,8 @@
     "phpunit/phpunit": "^11.2.5",
     "friendsofphp/php-cs-fixer": "^3.59",
     "league/statsd": "^2.0.0",
-    "cosmastech/psr-logger-spy": "^0.0.2"
+    "cosmastech/psr-logger-spy": "^0.0.2",
+    "datadog/php-datadogstatsd": "^1.6.1"
   },
   "suggest": {
     "datadog/php-datadogstatsd": "For DataDog stats",
