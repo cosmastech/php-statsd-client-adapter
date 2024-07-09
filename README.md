@@ -46,10 +46,23 @@ For a local development setup, you could just write the stats to a log. This wri
 
 See [examples/log_datadog.php](examples/log_datadog.php) for how you might implement this.
 
+### LeagueStatsDClientAdapter
+You can also write to an arbitrary statsd server by leveraging [PHP League's statsd package](https://github.com/thephpleague/statsd).
+
+First ensure that the package has been installed.
+```shell
+composer require league/statsd
+```
+
+For information on how to configure Client, [read their documentation](https://github.com/thephpleague/statsd?tab=readme-ov-file#configuring).
+
+**Note** the `histogram()` and `distribution()` methods are both no-op by default, as they are not available on statsd.
+
+See [examples/league.php](examples/league.php) for how you might implement this.
 
 ## Gotchas
 1. Only increment/decrement on DataDog's implementation allow for including the sample rate. If you are using a sample rate with other calls, their sample rate will not be included as part of the stat.
-2. There are `histogram()` and `distribution()` methods on `LeagueStatsDClientAdapter`, but they only raise a PHP error and are no-op.
+2. There are `histogram()` and `distribution()` methods on `LeagueStatsDClientAdapter`, but they will not be sent to statsd.
 
 
 ## Testing

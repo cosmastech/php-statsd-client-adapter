@@ -2,10 +2,13 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\League;
 
+use Closure;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\SampleRateSendDecider;
 use League\StatsD\Client;
@@ -18,12 +21,19 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
+    /**
+     * @var Closure(string, float, float, array<mixed, mixed>):void
+     */
+    protected Closure $unavailableStatHandler;
+
     public function __construct(
         protected readonly LeagueStatsDClientInterface $leagueStatsDClient,
-        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider,
+        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
         array $defaultTags = [],
+        TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
     ) {
         $this->setDefaultTags($defaultTags);
+        $this->setTagNormalizer($tagNormalizer);
     }
 
     /**
@@ -44,6 +54,35 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
             $defaultTags
         );
     }
+
+    /**
+     * @param  Closure(string, float, float, array<mixed, mixed>):void  $closure
+     * @return self
+     */
+    public function setUnavailableStatHandler(Closure $closure): self
+    {
+        $this->unavailableStatHandler = $closure;
+
+        return $this;
+    }
+
+    protected function handleUnavailableStat(
+        string $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
+        $this->getUnavailableStatHandler()($stat, $value, $sampleRate, $tags);
+    }
+
+    /**
+     * @return Closure(string, float, float, array<mixed, mixed>):void
+     */
+    protected function getUnavailableStatHandler(): Closure
+    {
+        return $this->unavailableStatHandler ?? function (): void {};
+    }
+
 
     /**
      * @throws ConnectionException
@@ -79,12 +118,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
 
     public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        trigger_error("histogram is not implemented for this client");
+        $this->handleUnavailableStat($stat, $value, $sampleRate, $tags);
     }
 
     public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        trigger_error("distribution is not implemented for this client");
+        $this->handleUnavailableStat($stat, $value, $sampleRate, $tags);
     }
 
     /**
