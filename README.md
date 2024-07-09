@@ -45,3 +45,8 @@ If you are using a framework like Symfony or Laravel, then you already have one 
 For a local development setup, you could just write the stats to a log. This writes the format exactly as it would be sent to DataDog.
 
 See [examples/log_datadog.php](examples/log_datadog.php) for how you might implement this.
+
+## Testing
+```shell
+composer test
+```
