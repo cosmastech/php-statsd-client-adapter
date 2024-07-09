@@ -4,3 +4,4 @@ composer.lock
 .php-cs-fixer.cache
 build
 .phpunit.cache
+examples/log_datadog.txt
