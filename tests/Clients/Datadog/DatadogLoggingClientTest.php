@@ -21,7 +21,7 @@ class DatadogLoggingClientTest extends BaseTestCase
 
     #[Test]
     #[DataProvider("logLevelsDataProvider")]
-    public function respectsLogLevel(string $logLevel)
+    public function respectsLogLevel(string $logLevel): void
     {
         // Given
         $datadogLoggingClient = new DatadogLoggingClient($this->loggerSpy, $logLevel);
@@ -36,6 +36,9 @@ class DatadogLoggingClientTest extends BaseTestCase
         self::assertEquals($logLevel, $logs[0]->getLevel()->value);
     }
 
+    /**
+     * @return array<string, array<int, string>>
+     */
     public static function logLevelsDataProvider(): array
     {
         return [

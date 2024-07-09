@@ -90,7 +90,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
-    public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, $tags = null): void
+    public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, array $tags = null): void
     {
         $this->datadogClient->updateStats(
             $stats,

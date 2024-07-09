@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class ConvertEnumNormalizerTest extends TestCase
 {
     #[Test]
-    public function normalize_convertsBackedEnumInValue()
+    public function normalize_convertsBackedEnumInValue(): void
     {
         // Given
         $convertEnumNormalizer = new ConvertEnumNormalizer();

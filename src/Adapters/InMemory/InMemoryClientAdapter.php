@@ -103,7 +103,10 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         $this->updateStats($stats, $value, $sampleRate, $tags);
     }
 
-    public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, $tags = null): void
+    /**
+     * @inheritDoc
+     */
+    public function updateStats(array|string $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
     {
         $stats = (array) $stats;
         $now = $this->clock->now();

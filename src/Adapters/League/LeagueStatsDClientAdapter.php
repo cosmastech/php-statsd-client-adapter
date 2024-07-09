@@ -26,6 +26,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      */
     protected Closure $unavailableStatHandler;
 
+    /**
+     * @param  LeagueStatsDClientInterface  $leagueStatsDClient
+     * @param  SampleRateSendDeciderInterface  $sampleRateSendDecider
+     * @param  array<mixed, mixed>  $defaultTags
+     * @param  TagNormalizer  $tagNormalizer
+     */
     public function __construct(
         protected readonly LeagueStatsDClientInterface $leagueStatsDClient,
         protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
@@ -37,6 +43,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     }
 
     /**
+     * @param  array<string, mixed>  $config
+     * @param  string  $instanceName
+     * @param  SampleRateSendDeciderInterface|null  $sampleRateSendDecider
+     * @param  array<mixed, mixed>  $defaultTags
+     * @return static
+     *
      * @throws ConfigurationException
      */
     public static function fromConfig(
@@ -66,6 +78,13 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         return $this;
     }
 
+    /**
+     * @param  string  $stat
+     * @param  float  $value
+     * @param  float  $sampleRate
+     * @param  array<mixed, mixed>  $tags
+     * @return void
+     */
     protected function handleUnavailableStat(
         string $stat,
         float $value,
@@ -85,6 +104,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
 
 
     /**
+     * @param  string  $stat
+     * @param  float  $durationMs
+     * @param  float  $sampleRate
+     * @param  array<mixed, mixed>  $tags
+     * @return void
+     *
      * @throws ConnectionException
      */
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
@@ -171,7 +196,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, $tags = null): void
+    public function updateStats(array|string $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->increment(
             $stats,
