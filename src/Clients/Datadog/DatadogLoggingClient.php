@@ -8,6 +8,11 @@ use Psr\Log\LogLevel;
 
 class DatadogLoggingClient extends DogStatsd
 {
+    /**
+     * @param  LoggerInterface  $logger
+     * @param  string  $logLevel
+     * @param  array<string, mixed>  $datadogConfig
+     */
     public function __construct(
         protected readonly LoggerInterface $logger,
         protected readonly string $logLevel = LogLevel::DEBUG,
@@ -16,6 +21,10 @@ class DatadogLoggingClient extends DogStatsd
         parent::__construct($datadogConfig);
     }
 
+    /**
+     * @param mixed $message
+     * @return void
+     */
     public function flush($message)
     {
         $this->logger->log($this->logLevel, $message);

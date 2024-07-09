@@ -8,11 +8,14 @@ use Psr\Clock\ClockInterface;
 
 class ClockStub implements ClockInterface
 {
-    /** @var array<int,DateTimeImmutable> */
+    /** @var array<int, DateTimeImmutable> */
     private readonly array $time;
 
     private int $currentIndex = 0;
 
+    /**
+     * @param  array<int, DateTimeImmutable>|DateTimeImmutable  $now
+     */
     public function __construct(array|DateTimeImmutable $now)
     {
         $time = is_array($now) ? $now : [$now];

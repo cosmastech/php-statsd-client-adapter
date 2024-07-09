@@ -9,7 +9,9 @@ use PHPUnit\Framework\Attributes\Test;
 
 class LeagueStatsDClientTest extends BaseTestCase
 {
+    /** @var array<int, mixed> */
     protected array $args;
+
     protected function setUp(): void
     {
         parent::setUp();

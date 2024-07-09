@@ -14,6 +14,10 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
 
+    /**
+     * @param  DogStatsd  $datadogClient
+     * @param  array<mixed, mixed>  $defaultTags
+     */
     public function __construct(protected readonly DogStatsd $datadogClient, array $defaultTags = [])
     {
         $this->tagNormalizer = new NoopTagNormalizer();
@@ -90,7 +94,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
-    public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, $tags = null): void
+    public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, array $tags = null): void
     {
         $this->datadogClient->updateStats(
             $stats,

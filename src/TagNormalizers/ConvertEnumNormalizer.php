@@ -7,6 +7,10 @@ use UnitEnum;
 
 class ConvertEnumNormalizer implements TagNormalizer
 {
+    /**
+     * @param  array<mixed, mixed>  $tags
+     * @return array<mixed, mixed>
+     */
     public function normalize(array $tags): array
     {
         $toReturn = [];

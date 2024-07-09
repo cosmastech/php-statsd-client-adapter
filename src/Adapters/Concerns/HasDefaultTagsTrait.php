@@ -4,6 +4,9 @@ namespace Cosmastech\StatsDClientAdapter\Adapters\Concerns;
 
 trait HasDefaultTagsTrait
 {
+    /**
+     * @var array<mixed, mixed>
+     */
     protected array $defaultTags = [];
 
     /**
@@ -23,8 +26,8 @@ trait HasDefaultTagsTrait
     }
 
     /**
-     * @param  array<string, mixed>  $tags
-     * @return array<string, mixed>
+     * @param  array<mixed, mixed>  $tags
+     * @return array<mixed, mixed>
      */
     protected function mergeTags(array $tags): array
     {
