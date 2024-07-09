@@ -1,4 +1,6 @@
 [![Latest Stable Version](http://poser.pugx.org/cosmastech/statsd-client-adapter/v)](https://packagist.org/packages/cosmastech/statsd-client-adapter) [![Total Downloads](http://poser.pugx.org/cosmastech/statsd-client-adapter/downloads)](https://packagist.org/packages/cosmastech/statsd-client-adapter)  [![License](http://poser.pugx.org/cosmastech/statsd-client-adapter/license)](https://packagist.org/packages/cosmastech/statsd-client-adapter) [![PHP Version Require](http://poser.pugx.org/cosmastech/statsd-client-adapter/require/php)](https://packagist.org/packages/cosmastech/statsd-client-adapter)
+
+
 # StatsD Client Adapter
 This package was originally designed to solve the problem of:
 * I use DataDog on production, but
@@ -14,11 +16,9 @@ Nor does the DataDog client allow for pushing to another StatsD implementation e
 
 The aim here is to allow for a single interface that can wrap around both, and be easily extended for different implementations.
 
-## Gotchas
-1. Only increment/decrement on DataDog's implementation allow for including the sample rate. If you are using a sample rate with other calls, their sample rate will not be included as part of the stat.
-2. There are `histogram()` and `distribution()` methods on `LeagueStatsDClientAdapter`, but they only raise a PHP error and are no-op.
 
 ## Adapters
+
 ### InMemoryClientAdapter
 This adapter simply records your stats in an object in memory. This is best served as a way to verify stats are recorded in your unit tests.
 
@@ -45,6 +45,12 @@ If you are using a framework like Symfony or Laravel, then you already have one 
 For a local development setup, you could just write the stats to a log. This writes the format exactly as it would be sent to DataDog.
 
 See [examples/log_datadog.php](examples/log_datadog.php) for how you might implement this.
+
+
+## Gotchas
+1. Only increment/decrement on DataDog's implementation allow for including the sample rate. If you are using a sample rate with other calls, their sample rate will not be included as part of the stat.
+2. There are `histogram()` and `distribution()` methods on `LeagueStatsDClientAdapter`, but they only raise a PHP error and are no-op.
+
 
 ## Testing
 ```shell
