@@ -62,6 +62,16 @@ class InMemoryStatsRecordTest extends BaseTestCase
                 "recordSet",
                 "getSets",
             ],
+            "histogram" => [
+                new InMemoryHistogramRecord("histy", 111, 1.0, ["key" => "value"], $datetime),
+                "recordHistogram",
+                "getHistograms",
+            ],
+            "distribution" => [
+                new InMemoryDistributionRecord("irrelevant", 0.3, 0.3, [], $datetime),
+                "recordDistribution",
+                "getDistributions"
+            ],
         ];
     }
     #[Test]
@@ -81,7 +91,7 @@ class InMemoryStatsRecordTest extends BaseTestCase
         self::assertEquals([], $record->getCounts());
         self::assertEquals([], $record->getGauges());
         self::assertEquals([], $record->getSets());
-        self::assertEquals([], $record->histogram);
+        self::assertEquals([], $record->getHistograms());
         self::assertEquals([], $record->distribution);
     }
 
@@ -127,13 +137,14 @@ class InMemoryStatsRecordTest extends BaseTestCase
             )
         );
 
-        $record->histogram[] = new InMemoryHistogramRecord(
+        $record->recordHistogram(new InMemoryHistogramRecord(
             "irrelevant",
             0.4,
             0.45,
             [],
             new DateTimeImmutable()
-        );
+        ));
+
         $record->distribution[] = new InMemoryDistributionRecord(
             "irrelevant",
             1.0,

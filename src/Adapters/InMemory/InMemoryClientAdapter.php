@@ -92,12 +92,14 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
      */
     public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->histogram[] = new InMemoryHistogramRecord(
-            $stat,
-            $value,
-            $sampleRate,
-            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
-            $this->clock->now()
+        $this->stats->recordHistogram(
+            new InMemoryHistogramRecord(
+                $stat,
+                $value,
+                $sampleRate,
+                $this->normalizeTags($this->mergeWithDefaultTags($tags)),
+                $this->clock->now()
+            )
         );
     }
 

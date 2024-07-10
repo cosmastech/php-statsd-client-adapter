@@ -20,7 +20,7 @@ class InMemoryStatsRecord
     protected array $set;
 
     /** @var array<int, InMemoryHistogramRecord> */
-    public array $histogram;
+    protected array $histogram;
 
     /** @var array<int, InMemoryDistributionRecord> */
     public array $distribution;
@@ -82,6 +82,18 @@ class InMemoryStatsRecord
         return $this->set;
     }
 
+    public function recordHistogram(InMemoryHistogramRecord $inMemoryHistogramRecord): void
+    {
+        $this->histogram[] = $inMemoryHistogramRecord;
+    }
+
+    /**
+     * @return array<int, InMemoryHistogramRecord>
+     */
+    public function getHistograms(): array
+    {
+        return $this->histogram;
+    }
 
 
     public function flush(): void

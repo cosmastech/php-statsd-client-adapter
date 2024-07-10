@@ -30,9 +30,9 @@ class InMemoryHistogramTest extends BaseTestCase
 
         // Then
         $statsRecord = $inMemoryClient->getStats();
-        self::assertCount(1, $statsRecord->histogram);
+        self::assertCount(1, $statsRecord->getHistograms());
 
-        $histogramRecord = $statsRecord->histogram[0];
+        $histogramRecord = $statsRecord->getHistograms()[0];
         self::assertEquals("histogram-stat", $histogramRecord->stat);
         self::assertEquals(23488, $histogramRecord->value);
         self::assertEquals(0.55, $histogramRecord->sampleRate);
@@ -72,7 +72,7 @@ class InMemoryHistogramTest extends BaseTestCase
         $inMemoryClient->histogram(stat: "some-stat", value: 1.2, tags: ["hello" => "world"]);
 
         // Then
-        $histogramStat = $inMemoryClient->getStats()->histogram[0];
+        $histogramStat = $inMemoryClient->getStats()->getHistograms()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $histogramStat->tags);
     }
 }
