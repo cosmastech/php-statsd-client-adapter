@@ -4,6 +4,7 @@ namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory;
 
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryCountRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryDistributionRecord;
@@ -21,6 +22,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
+    use TimeClosureTrait;
 
     protected InMemoryStatsRecord $stats;
     protected readonly ClockInterface $clock;

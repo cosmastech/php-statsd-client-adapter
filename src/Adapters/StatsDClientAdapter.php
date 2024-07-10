@@ -15,6 +15,15 @@ interface StatsDClientAdapter
 
     /**
      * @param  string  $stat
+     * @param  callable  $closure
+     * @param  float  $sampleRate
+     * @param  array<mixed, mixed>  $tags
+     * @return mixed
+     */
+    public function time(string $stat, callable $closure, float $sampleRate = 1.0, array $tags = []);
+
+    /**
+     * @param  string  $stat
      * @param  float  $value
      * @param  float  $sampleRate
      * @param  array<mixed, mixed>  $tags

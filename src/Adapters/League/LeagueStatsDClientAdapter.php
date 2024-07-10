@@ -5,6 +5,7 @@ namespace Cosmastech\StatsDClientAdapter\Adapters\League;
 use Closure;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
@@ -20,6 +21,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
 {
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
+    use TimeClosureTrait;
 
     /**
      * @var Closure(string, float, float, array<mixed, mixed>):void

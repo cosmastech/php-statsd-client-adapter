@@ -4,6 +4,7 @@ namespace Cosmastech\StatsDClientAdapter\Adapters\Datadog;
 
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
@@ -13,6 +14,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
 {
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
+    use TimeClosureTrait;
 
     /**
      * @param  DogStatsd  $datadogClient
