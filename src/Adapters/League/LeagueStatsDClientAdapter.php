@@ -25,6 +25,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     use TagNormalizerAwareTrait;
     use TimeClosureTrait;
 
+    protected readonly LeagueStatsDClientInterface $leagueStatsDClient;
+
+    protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider;
+
+    protected readonly ClockInterface $clock;
+
     /**
      * @var Closure(string, float, float, array<mixed, mixed>):void
      */
@@ -32,36 +38,43 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
 
     /**
      * @param  LeagueStatsDClientInterface  $leagueStatsDClient
-     * @param  SampleRateSendDeciderInterface  $sampleRateSendDecider
      * @param  array<mixed, mixed>  $defaultTags
+     * @param  SampleRateSendDeciderInterface  $sampleRateSendDecider
      * @param  TagNormalizer  $tagNormalizer
      * @param  ClockInterface  $clock
      */
     public function __construct(
-        protected readonly LeagueStatsDClientInterface $leagueStatsDClient,
-        protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
+        LeagueStatsDClientInterface $leagueStatsDClient,
         array $defaultTags = [],
+        SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
         TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
-        protected readonly ClockInterface $clock = new Clock(),
+        ClockInterface $clock = new Clock(),
     ) {
+        $this->leagueStatsDClient = $leagueStatsDClient;
         $this->setDefaultTags($defaultTags);
+        $this->sampleRateSendDecider = $sampleRateSendDecider;
         $this->setTagNormalizer($tagNormalizer);
+        $this->clock = $clock;
     }
 
     /**
      * @param  array<string, mixed>  $config
-     * @param  string  $instanceName
-     * @param  SampleRateSendDeciderInterface|null  $sampleRateSendDecider
      * @param  array<mixed, mixed>  $defaultTags
+     * @param  SampleRateSendDeciderInterface  $sampleRateSendDecider
+     * @param  string  $instanceName
+     * @param  TagNormalizer  $tagNormalizer
+     * @param  ClockInterface  $clock
      * @return self
      *
      * @throws ConfigurationException
      */
     public static function fromConfig(
         array $config,
+        array $defaultTags = [],
+        SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
         string $instanceName = 'default',
-        ?SampleRateSendDeciderInterface $sampleRateSendDecider = null,
-        array $defaultTags = []
+        TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+        ClockInterface $clock = new Clock(),
     ): self {
         /** @var Client $instance */
         $instance = Client::instance($instanceName);
@@ -69,8 +82,10 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
 
         return new self(
             $instance,
-            $sampleRateSendDecider ?? new SampleRateSendDecider(),
-            $defaultTags
+            $defaultTags,
+            $sampleRateSendDecider,
+            $tagNormalizer,
+            $clock
         );
     }
 
@@ -128,7 +143,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         $this->leagueStatsDClient->timing(
             $stat,
             $durationMs,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -144,7 +159,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         $this->leagueStatsDClient->gauge(
             $stat,
             $value,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -170,7 +185,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         $this->leagueStatsDClient->set(
             $stat,
             $value,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -183,7 +198,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
             $stats,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -196,7 +211,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
             $stats,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -208,7 +223,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         $this->increment(
             $stats,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $delta
         );
     }

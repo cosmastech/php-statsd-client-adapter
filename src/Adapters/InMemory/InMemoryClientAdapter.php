@@ -49,7 +49,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $durationMs,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $this->clock->now()
         );
     }
@@ -63,7 +63,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $this->clock->now()
         );
     }
@@ -74,7 +74,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $this->clock->now()
         );
     }
@@ -85,7 +85,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $this->clock->now()
         );
     }
@@ -96,7 +96,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $this->clock->now()
         );
     }
@@ -128,7 +128,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
                 $stat,
                 $delta,
                 $sampleRate,
-                $this->normalizeTags($this->mergeTags($tags)),
+                $this->normalizeTags($this->mergeWithDefaultTags($tags)),
                 $now
             );
         }

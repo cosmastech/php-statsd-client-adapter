@@ -41,7 +41,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
             $stat,
             $durationMs,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -51,7 +51,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -61,7 +61,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -71,7 +71,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -81,7 +81,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
             $stat,
             $value,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
@@ -90,7 +90,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         $this->datadogClient->increment(
             $stats,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $value
         );
     }
@@ -100,7 +100,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         $this->datadogClient->decrement(
             $stats,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags)),
+            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $value
         );
     }
@@ -111,7 +111,7 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
             $stats,
             $delta,
             $sampleRate,
-            $this->normalizeTags($this->mergeTags($tags))
+            $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
