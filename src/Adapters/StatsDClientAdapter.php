@@ -81,12 +81,15 @@ interface StatsDClientAdapter
     /**
      * @param  array<int, string>|string  $stats
      * @param  int  $delta
-     * @param float $sampleRate
-     * @param array<mixed, mixed> $tags
+     * @param  float $sampleRate
+     * @param  array<mixed, mixed> $tags
      * @return void
      */
     public function updateStats(array|string $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void;
 
+    /**
+     * Returning underlying client.
+     */
     public function getClient(): mixed;
 
     /**
