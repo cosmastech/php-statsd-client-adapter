@@ -19,22 +19,31 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     use TagNormalizerAwareTrait;
     use TimeClosureTrait;
 
+    protected readonly DogStatsd $datadogClient;
+
+    protected readonly ClockInterface $clock;
+
     /**
      * @param  DogStatsd  $datadogClient
      * @param  array<mixed, mixed>  $defaultTags
-     * @param  ClockInterface  $clock
      * @param  TagNormalizer  $tagNormalizer
+     * @param  ClockInterface  $clock
      */
     public function __construct(
-        protected readonly DogStatsd $datadogClient,
+        DogStatsd $datadogClient,
         array $defaultTags = [],
-        protected readonly ClockInterface $clock = new Clock(),
         TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+        ClockInterface $clock = new Clock(),
     ) {
-        $this->setTagNormalizer($tagNormalizer);
+        $this->datadogClient = $datadogClient;
         $this->setDefaultTags($defaultTags);
+        $this->setTagNormalizer($tagNormalizer);
+        $this->clock = $clock;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->datadogClient->timing(
@@ -45,6 +54,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->datadogClient->gauge(
@@ -55,6 +67,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->datadogClient->histogram(
@@ -65,6 +80,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->datadogClient->distribution(
@@ -75,6 +93,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->datadogClient->set(
@@ -85,6 +106,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function increment(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
     {
         $this->datadogClient->increment(
@@ -95,6 +119,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = -1): void
     {
         $this->datadogClient->decrement(
@@ -105,6 +132,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function updateStats(array|string $stats, int $delta = 1, $sampleRate = 1.0, array $tags = null): void
     {
         $this->datadogClient->updateStats(
@@ -115,6 +145,9 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getClient(): DogStatsd
     {
         return $this->datadogClient;
