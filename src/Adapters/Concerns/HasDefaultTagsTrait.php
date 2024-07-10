@@ -29,7 +29,7 @@ trait HasDefaultTagsTrait
      * @param  array<mixed, mixed>  $tags
      * @return array<mixed, mixed>
      */
-    protected function mergeTags(array $tags): array
+    protected function mergeWithDefaultTags(array $tags): array
     {
         return array_merge($this->getDefaultTags(), $tags);
     }

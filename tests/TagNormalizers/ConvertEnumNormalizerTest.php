@@ -6,9 +6,11 @@ use Cosmastech\StatsDClientAdapter\TagNormalizers\ConvertEnumNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\IntBackedEnum;
 use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\StringBackedEnum;
 use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\UnbackedEnum;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(ConvertEnumNormalizer::class)]
 class ConvertEnumNormalizerTest extends TestCase
 {
     #[Test]

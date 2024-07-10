@@ -28,6 +28,9 @@
     "league/statsd": "For generic statsd clients",
     "monolog/monolog": "For psr log implementation"
   },
+  "provide": {
+    "psr/clock-implementation": "3.0.0"
+  },
   "autoload": {
     "psr-4": {
       "Cosmastech\\StatsDClientAdapter\\": "src"

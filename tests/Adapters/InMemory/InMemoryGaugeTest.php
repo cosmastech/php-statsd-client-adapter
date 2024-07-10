@@ -3,6 +3,8 @@
 namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
@@ -16,16 +18,21 @@ class InMemoryGaugeTest extends BaseTestCase
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2018-02-13 18:50:00");
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub($stubDateTime));
+        $inMemoryClient = new InMemoryClientAdapter(
+            [],
+            new InMemoryStatsRecord(),
+            new NoopTagNormalizer(),
+            new ClockStub($stubDateTime)
+        );
 
         // When
         $inMemoryClient->gauge("gauge-stat", 23488);
 
         // Then
         $statsRecord = $inMemoryClient->getStats();
-        self::assertCount(1, $statsRecord->gauge);
+        self::assertCount(1, $statsRecord->getGauges());
 
-        $gaugeRecord = $statsRecord->gauge[0];
+        $gaugeRecord = $statsRecord->getGauges()[0];
         self::assertEquals("gauge-stat", $gaugeRecord->stat);
         self::assertEquals(23488, $gaugeRecord->value);
         self::assertEquals(1, $gaugeRecord->sampleRate);
@@ -37,7 +44,12 @@ class InMemoryGaugeTest extends BaseTestCase
     public function normalizesTags(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter(
+            [],
+            new InMemoryStatsRecord(),
+            new NoopTagNormalizer(),
+            new ClockStub(new DateTimeImmutable())
+        );
 
         // And
         $tagNormalizerSpy = new TagNormalizerSpy();
@@ -55,13 +67,13 @@ class InMemoryGaugeTest extends BaseTestCase
     {
         // Given
         $defaultTags = ["abc" => 123];
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()), $defaultTags);
+        $inMemoryClient = new InMemoryClientAdapter($defaultTags);
 
         // When
         $inMemoryClient->gauge("some-stat", value: 1.1, tags: ["hello" => "world"]);
 
         // Then
-        $gaugeStat = $inMemoryClient->getStats()->gauge[0];
+        $gaugeStat = $inMemoryClient->getStats()->getGauges()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $gaugeStat->tags);
     }
 }

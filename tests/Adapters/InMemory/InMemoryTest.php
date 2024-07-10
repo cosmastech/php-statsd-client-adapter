@@ -6,8 +6,10 @@ use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
+#[CoversClass(InMemoryClientAdapter::class)]
 class InMemoryTest extends BaseTestCase
 {
     #[Test]
@@ -25,7 +27,7 @@ class InMemoryTest extends BaseTestCase
     }
 
     #[Test]
-    public function reset_clearsStats(): void
+    public function flush_clearsStats(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter();
@@ -37,7 +39,7 @@ class InMemoryTest extends BaseTestCase
         $inMemoryClient->histogram("histogram", 259444);
 
         // When
-        $inMemoryClient->reset();
+        $inMemoryClient->flush();
 
         // Then
         self::assertEachRecordWithinStatsRecordIsEmpty($inMemoryClient->getStats());
@@ -75,11 +77,11 @@ class InMemoryTest extends BaseTestCase
 
     private static function assertEachRecordWithinStatsRecordIsEmpty(InMemoryStatsRecord $record): void
     {
-        self::assertEmpty($record->distribution);
-        self::assertEmpty($record->count);
-        self::assertEmpty($record->histogram);
-        self::assertEmpty($record->set);
-        self::assertEmpty($record->timing);
-        self::assertEmpty($record->gauge);
+        self::assertEmpty($record->getDistributions());
+        self::assertEmpty($record->getCounts());
+        self::assertEmpty($record->getHistograms());
+        self::assertEmpty($record->getSets());
+        self::assertEmpty($record->getTimings());
+        self::assertEmpty($record->getGauges());
     }
 }

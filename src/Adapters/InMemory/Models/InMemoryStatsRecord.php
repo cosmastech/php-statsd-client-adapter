@@ -2,21 +2,55 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models;
 
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\Concerns\GetAndSetRecordsTrait;
+
+/**
+ * Container class for storing all stats.
+ */
 class InMemoryStatsRecord
 {
-    public function __construct(
-        /** @var array<int, InMemoryTimingRecord> */
-        public array $timing = [],
-        /** @var array<int, InMemoryCountRecord> */
-        public array $count = [],
-        /** @var array<int, InMemoryGaugeRecord> */
-        public array $gauge = [],
-        /** @var array<int, InMemorySetRecord> */
-        public array $set = [],
-        /** @var array<int, InMemoryHistogramRecord> */
-        public array $histogram = [],
-        /** @var array<int, InMemoryDistributionRecord> */
-        public array $distribution = []
-    ) {
+    use GetAndSetRecordsTrait;
+
+    /** @var array<int, InMemoryTimingRecord> */
+    protected array $timing;
+
+    /** @var array<int, InMemoryCountRecord> */
+    protected array $count;
+
+    /** @var array<int, InMemoryGaugeRecord> */
+    protected array $gauge;
+
+    /** @var array<int, InMemorySetRecord> */
+    protected array $set;
+
+    /** @var array<int, InMemoryHistogramRecord> */
+    protected array $histogram;
+
+    /** @var array<int, InMemoryDistributionRecord> */
+    protected array $distribution;
+
+    public function __construct()
+    {
+        $this->resetStats();
+    }
+
+    public function flush(): void
+    {
+        $this->resetStats();
+    }
+
+    /**
+     * Empty all stat array containers.
+     *
+     * @return void
+     */
+    protected function resetStats(): void
+    {
+        $this->timing = [];
+        $this->count = [];
+        $this->gauge = [];
+        $this->set = [];
+        $this->histogram = [];
+        $this->distribution = [];
     }
 }

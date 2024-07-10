@@ -5,8 +5,10 @@ namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\League;
 use Cosmastech\StatsDClientAdapter\Adapters\League\LeagueStatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use League\StatsD\StatsDClient;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
+#[CoversClass(LeagueStatsDClientAdapter::class)]
 class LeagueStatsDClientTest extends BaseTestCase
 {
     /** @var array<int, mixed> */

@@ -3,6 +3,8 @@
 namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
@@ -16,7 +18,7 @@ class InMemoryHistogramTest extends BaseTestCase
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2018-02-13 18:50:00");
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub($stubDateTime));
+        $inMemoryClient = new InMemoryClientAdapter(clock: new ClockStub($stubDateTime));
 
         // When
         $inMemoryClient->histogram(
@@ -28,9 +30,9 @@ class InMemoryHistogramTest extends BaseTestCase
 
         // Then
         $statsRecord = $inMemoryClient->getStats();
-        self::assertCount(1, $statsRecord->histogram);
+        self::assertCount(1, $statsRecord->getHistograms());
 
-        $histogramRecord = $statsRecord->histogram[0];
+        $histogramRecord = $statsRecord->getHistograms()[0];
         self::assertEquals("histogram-stat", $histogramRecord->stat);
         self::assertEquals(23488, $histogramRecord->value);
         self::assertEquals(0.55, $histogramRecord->sampleRate);
@@ -42,11 +44,10 @@ class InMemoryHistogramTest extends BaseTestCase
     public function normalizesTags(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $tagNormalizerSpy = new TagNormalizerSpy();
 
         // And
-        $tagNormalizerSpy = new TagNormalizerSpy();
-        $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
+        $inMemoryClient = new InMemoryClientAdapter(tagNormalizer: $tagNormalizerSpy);
 
         // When
         $inMemoryClient->histogram(stat: "irrelevant", value: 19.2, tags: ["hello" => "world"]);
@@ -60,13 +61,18 @@ class InMemoryHistogramTest extends BaseTestCase
     {
         // Given
         $defaultTags = ["abc" => 123];
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()), $defaultTags);
+        $inMemoryClient = new InMemoryClientAdapter(
+            $defaultTags,
+            new InMemoryStatsRecord(),
+            new NoopTagNormalizer(),
+            new ClockStub(new DateTimeImmutable())
+        );
 
         // When
         $inMemoryClient->histogram(stat: "some-stat", value: 1.2, tags: ["hello" => "world"]);
 
         // Then
-        $histogramStat = $inMemoryClient->getStats()->histogram[0];
+        $histogramStat = $inMemoryClient->getStats()->getHistograms()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $histogramStat->tags);
     }
 }
