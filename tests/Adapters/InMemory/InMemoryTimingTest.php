@@ -30,9 +30,9 @@ class InMemoryTimingTest extends BaseTestCase
 
         // Then
         $statsRecord = $inMemoryClient->getStats();
-        self::assertCount(1, $statsRecord->timing);
+        self::assertCount(1, $statsRecord->getTimings());
 
-        $timingRecord = $statsRecord->timing[0];
+        $timingRecord = $statsRecord->getTimings()[0];
         self::assertEquals("timing-stat", $timingRecord->stat);
         self::assertEquals(199, $timingRecord->durationMilliseconds);
         self::assertEquals(0.2, $timingRecord->sampleRate);
@@ -74,7 +74,7 @@ class InMemoryTimingTest extends BaseTestCase
         $inMemoryClient->timing(stat: "some-stat", durationMs: 1, tags: ["hello" => "world"]);
 
         // Then
-        $timingStat = $inMemoryClient->getStats()->timing[0];
+        $timingStat = $inMemoryClient->getStats()->getTimings()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $timingStat->tags);
     }
 
@@ -99,7 +99,7 @@ class InMemoryTimingTest extends BaseTestCase
         // Then
         self::assertEquals("abc", $actualReturn);
 
-        $timingRecord = $inMemoryClient->getStats()->timing[0];
+        $timingRecord = $inMemoryClient->getStats()->getTimings()[0];
         self::assertEquals(1000, $timingRecord->durationMilliseconds);
     }
 }

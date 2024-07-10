@@ -78,10 +78,10 @@ class InMemoryTest extends BaseTestCase
     private static function assertEachRecordWithinStatsRecordIsEmpty(InMemoryStatsRecord $record): void
     {
         self::assertEmpty($record->distribution);
-        self::assertEmpty($record->count);
+        self::assertEmpty($record->getCounts());
         self::assertEmpty($record->histogram);
         self::assertEmpty($record->set);
-        self::assertEmpty($record->timing);
+        self::assertEmpty($record->getTimings());
         self::assertEmpty($record->gauge);
     }
 }

@@ -8,10 +8,10 @@ namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models;
 class InMemoryStatsRecord
 {
     /** @var array<int, InMemoryTimingRecord> */
-    public array $timing;
+    protected array $timing;
 
     /** @var array<int, InMemoryCountRecord> */
-    public array $count;
+    protected array $count;
 
     /** @var array<int, InMemoryGaugeRecord> */
     public array $gauge;
@@ -28,6 +28,19 @@ class InMemoryStatsRecord
     public function __construct()
     {
         $this->flush();
+    }
+
+    public function recordTiming(InMemoryTimingRecord $inMemoryTimingRecord): void
+    {
+        $this->timing[] = $inMemoryTimingRecord;
+    }
+
+    /**
+     * @return array<int, InMemoryTimingRecord>
+     */
+    public function getTimings(): array
+    {
+        return $this->timing;
     }
 
     public function recordCount(InMemoryCountRecord $inMemoryCountRecord): void

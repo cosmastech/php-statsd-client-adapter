@@ -30,8 +30,8 @@ class InMemoryStatsRecordTest extends BaseTestCase
         $record->flush();
 
         // Then
-        self::assertEquals([], $record->timing);
-        self::assertEquals([], $record->count);
+        self::assertEquals([], $record->getTimings());
+        self::assertEquals([], $record->getCounts());
         self::assertEquals([], $record->gauge);
         self::assertEquals([], $record->set);
         self::assertEquals([], $record->histogram);
@@ -40,20 +40,24 @@ class InMemoryStatsRecordTest extends BaseTestCase
 
     private function fillStatsRecord(InMemoryStatsRecord $record): void
     {
-        $record->timing[] = new InMemoryTimingRecord(
-            "irrelevant",
-            99.2,
-            1.0,
-            ["key" => "value"],
-            new DateTimeImmutable()
+        $record->recordTiming(
+            new InMemoryTimingRecord(
+                "irrelevant",
+                99.2,
+                1.0,
+                ["key" => "value"],
+                new DateTimeImmutable()
+            )
         );
 
-        $record->count[] = new InMemoryCountRecord(
-            "irrelevant-count",
-            23,
-            0.2,
-            [],
-            new DateTimeImmutable()
+        $record->recordCount(
+            new InMemoryCountRecord(
+                "irrelevant-count",
+                23,
+                0.2,
+                [],
+                new DateTimeImmutable()
+            )
         );
 
         $record->gauge[] = new InMemoryGaugeRecord(

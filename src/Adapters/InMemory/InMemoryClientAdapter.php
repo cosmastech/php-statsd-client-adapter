@@ -60,12 +60,14 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
      */
     public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->timing[] = new InMemoryTimingRecord(
-            $stat,
-            $durationMs,
-            $sampleRate,
-            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
-            $this->clock->now()
+        $this->stats->recordTiming(
+            new InMemoryTimingRecord(
+                $stat,
+                $durationMs,
+                $sampleRate,
+                $this->normalizeTags($this->mergeWithDefaultTags($tags)),
+                $this->clock->now()
+            )
         );
     }
 
@@ -154,12 +156,14 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         $now = $this->clock->now();
 
         foreach ($stats as $stat) {
-            $this->stats->count[] = new InMemoryCountRecord(
-                $stat,
-                $delta,
-                $sampleRate,
-                $this->normalizeTags($this->mergeWithDefaultTags($tags)),
-                $now
+            $this->stats->recordCount(
+                new InMemoryCountRecord(
+                    $stat,
+                    $delta,
+                    $sampleRate,
+                    $this->normalizeTags($this->mergeWithDefaultTags($tags)),
+                    $now
+                )
             );
         }
     }

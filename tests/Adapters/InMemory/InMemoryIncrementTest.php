@@ -31,9 +31,9 @@ class InMemoryIncrementTest extends BaseTestCase
 
         // Then
         $statsRecord = $inMemoryClient->getStats();
-        self::assertCount(1, $statsRecord->count);
+        self::assertCount(1, $statsRecord->getCounts());
 
-        $countRecord = $statsRecord->count[0];
+        $countRecord = $statsRecord->getCounts()[0];
         self::assertInstanceOf(InMemoryCountRecord::class, $countRecord);
         self::assertEquals("hello", $countRecord->stat);
         self::assertEquals(1, $countRecord->count);
@@ -57,7 +57,7 @@ class InMemoryIncrementTest extends BaseTestCase
         $inMemoryClient->increment("hello", tags: ["abc" => 199, "xyz" => "end"]);
 
         // Then
-        $countRecord = $inMemoryClient->getStats()->count[0];
+        $countRecord = $inMemoryClient->getStats()->getCounts()[0];
         self::assertEqualsCanonicalizing(["abc" => 199, "xyz" => "end"], $countRecord->tags);
     }
 
@@ -99,7 +99,7 @@ class InMemoryIncrementTest extends BaseTestCase
         $inMemoryClient->increment("some-stat", tags: ["hello" => "world"]);
 
         // Then
-        $countStat = $inMemoryClient->getStats()->count[0];
+        $countStat = $inMemoryClient->getStats()->getCounts()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $countStat->tags);
     }
 }

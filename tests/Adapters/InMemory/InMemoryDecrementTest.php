@@ -65,7 +65,7 @@ class InMemoryDecrementTest extends BaseTestCase
         $inMemoryClient->decrement("some-stat", value: 1845);
 
         // Then
-        $countStat = $inMemoryClient->getStats()->count[0];
+        $countStat = $inMemoryClient->getStats()->getCounts()[0];
         self::assertEquals(-1845, $countStat->count);
     }
 
@@ -80,7 +80,7 @@ class InMemoryDecrementTest extends BaseTestCase
         $inMemoryClient->decrement("some-stat", tags: ["hello" => "world"]);
 
         // Then
-        $countStat = $inMemoryClient->getStats()->count[0];
+        $countStat = $inMemoryClient->getStats()->getCounts()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $countStat->tags);
     }
 }

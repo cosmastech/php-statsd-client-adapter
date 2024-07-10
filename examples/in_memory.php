@@ -24,7 +24,7 @@ $inMemoryAdapter->timing("api-response", timeInMilliseconds() - $startTimeInMs, 
 /** @var \Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord $stats */
 $stats = $inMemoryAdapter->getStats();
 
-var_dump($stats->timing[0]);
+var_dump($stats->getTimings()[0]);
 /*
 object(Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryTimingRecord)#7 (5) {
   ["stat"]=>
