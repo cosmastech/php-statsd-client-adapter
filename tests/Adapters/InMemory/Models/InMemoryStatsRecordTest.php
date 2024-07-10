@@ -70,7 +70,7 @@ class InMemoryStatsRecordTest extends BaseTestCase
             "distribution" => [
                 new InMemoryDistributionRecord("irrelevant", 0.3, 0.3, [], $datetime),
                 "recordDistribution",
-                "getDistributions"
+                "getDistributions",
             ],
         ];
     }
