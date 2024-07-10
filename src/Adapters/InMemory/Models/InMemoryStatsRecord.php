@@ -14,7 +14,7 @@ class InMemoryStatsRecord
     protected array $count;
 
     /** @var array<int, InMemoryGaugeRecord> */
-    public array $gauge;
+    protected array $gauge;
 
     /** @var array<int, InMemorySetRecord> */
     public array $set;
@@ -54,6 +54,19 @@ class InMemoryStatsRecord
     public function getCounts(): array
     {
         return $this->count;
+    }
+
+    public function recordGauge(InMemoryGaugeRecord $inMemoryGaugeRecord): void
+    {
+        $this->gauge[] = $inMemoryGaugeRecord;
+    }
+
+    /**
+     * @return array<int, InMemoryGaugeRecord>
+     */
+    public function getGauges(): array
+    {
+        return $this->gauge;
     }
 
     public function flush(): void

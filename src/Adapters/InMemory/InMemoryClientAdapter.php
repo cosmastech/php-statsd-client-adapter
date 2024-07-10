@@ -76,12 +76,14 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
      */
     public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->gauge[] = new InMemoryGaugeRecord(
-            $stat,
-            $value,
-            $sampleRate,
-            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
-            $this->clock->now()
+        $this->stats->recordGauge(
+            new InMemoryGaugeRecord(
+                $stat,
+                $value,
+                $sampleRate,
+                $this->normalizeTags($this->mergeWithDefaultTags($tags)),
+                $this->clock->now()
+            )
         );
     }
 

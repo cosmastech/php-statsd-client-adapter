@@ -32,7 +32,7 @@ class InMemoryStatsRecordTest extends BaseTestCase
         // Then
         self::assertEquals([], $record->getTimings());
         self::assertEquals([], $record->getCounts());
-        self::assertEquals([], $record->gauge);
+        self::assertEquals([], $record->getGauges());
         self::assertEquals([], $record->set);
         self::assertEquals([], $record->histogram);
         self::assertEquals([], $record->distribution);
@@ -60,12 +60,14 @@ class InMemoryStatsRecordTest extends BaseTestCase
             )
         );
 
-        $record->gauge[] = new InMemoryGaugeRecord(
-            "irrelevant",
-            1.3,
-            0.01,
-            ["k" => "v"],
-            new DateTimeImmutable()
+        $record->recordGauge(
+            new InMemoryGaugeRecord(
+                "irrelevant",
+                1.3,
+                0.01,
+                ["k" => "v"],
+                new DateTimeImmutable()
+            )
         );
 
         $record->set[] = new InMemorySetRecord(

@@ -30,9 +30,9 @@ class InMemoryGaugeTest extends BaseTestCase
 
         // Then
         $statsRecord = $inMemoryClient->getStats();
-        self::assertCount(1, $statsRecord->gauge);
+        self::assertCount(1, $statsRecord->getGauges());
 
-        $gaugeRecord = $statsRecord->gauge[0];
+        $gaugeRecord = $statsRecord->getGauges()[0];
         self::assertEquals("gauge-stat", $gaugeRecord->stat);
         self::assertEquals(23488, $gaugeRecord->value);
         self::assertEquals(1, $gaugeRecord->sampleRate);
@@ -73,7 +73,7 @@ class InMemoryGaugeTest extends BaseTestCase
         $inMemoryClient->gauge("some-stat", value: 1.1, tags: ["hello" => "world"]);
 
         // Then
-        $gaugeStat = $inMemoryClient->getStats()->gauge[0];
+        $gaugeStat = $inMemoryClient->getStats()->getGauges()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $gaugeStat->tags);
     }
 }
