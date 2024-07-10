@@ -4,8 +4,10 @@ namespace Cosmastech\StatsDClientAdapter\Tests\Utility\SampleRateDecider;
 
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\SampleRateSendDecider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
+#[CoversClass(SampleRateSendDecider::class)]
 class SampleRateSendDeciderTest extends BaseTestCase
 {
     #[Test]
