@@ -15,6 +15,7 @@ use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryTimingRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
 use Cosmastech\StatsDClientAdapter\Utility\Clock;
 use Psr\Clock\ClockInterface;
 
@@ -24,22 +25,26 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     use TagNormalizerAwareTrait;
     use TimeClosureTrait;
 
-    protected InMemoryStatsRecord $stats;
+    protected readonly InMemoryStatsRecord $stats;
 
     protected readonly ClockInterface $clock;
 
     /**
-     * @param  ClockInterface  $clock
      * @param  array<mixed, mixed>  $defaultTags
+     * @param  InMemoryStatsRecord  $inMemoryStatsRecord
+     * @param  TagNormalizer  $tagNormalizer
+     * @param  ClockInterface  $clock
      */
-    public function __construct(ClockInterface $clock = new Clock(), array $defaultTags = [])
-    {
-        $this->clock = $clock;
-
-        $this->setTagNormalizer(new NoopTagNormalizer());
+    public function __construct(
+        array $defaultTags = [],
+        InMemoryStatsRecord $inMemoryStatsRecord = new InMemoryStatsRecord(),
+        TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+        ClockInterface $clock = new Clock()
+    ) {
         $this->setDefaultTags($defaultTags);
-
-        $this->reset();
+        $this->stats = $inMemoryStatsRecord;
+        $this->setTagNormalizer($tagNormalizer);
+        $this->clock = $clock;
     }
 
     /**
@@ -47,7 +52,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
      */
     public function reset(): void
     {
-        $this->stats = new InMemoryStatsRecord();
+        $this->stats->flush();
     }
 
     /**

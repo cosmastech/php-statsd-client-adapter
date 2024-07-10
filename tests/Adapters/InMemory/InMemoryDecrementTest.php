@@ -3,6 +3,8 @@
 namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
@@ -18,6 +20,9 @@ class InMemoryDecrementTest extends BaseTestCase
         $stubDateTime = new DateTimeImmutable("2024-02-18 14:22:19");
 
         $inMemoryClient = new InMemoryClientAdapter(
+            [],
+            new InMemoryStatsRecord(),
+            new NoopTagNormalizer(),
             new ClockStub($stubDateTime)
         );
 
@@ -25,7 +30,7 @@ class InMemoryDecrementTest extends BaseTestCase
         $inMemoryClient->decrement("goodbye", sampleRate: 0.1, tags: ["ringo" => "drummer"], value: -129);
 
         // Then
-        $countStat = $inMemoryClient->getStats()->count[0];
+        $countStat = $inMemoryClient->getStats()->getCounts()[0];
         self::assertEquals(-129, $countStat->count);
         self::assertEquals("goodbye", $countStat->stat);
         self::assertEqualsCanonicalizing(["ringo" => "drummer"], $countStat->tags);
@@ -37,7 +42,7 @@ class InMemoryDecrementTest extends BaseTestCase
     public function normalizesTags(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter();
 
         // And
         $tagNormalizerSpy = new TagNormalizerSpy();
@@ -54,7 +59,7 @@ class InMemoryDecrementTest extends BaseTestCase
     public function positiveValue_convertsToANegativeNumber(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter();
 
         // When
         $inMemoryClient->decrement("some-stat", value: 1845);
@@ -69,7 +74,7 @@ class InMemoryDecrementTest extends BaseTestCase
     {
         // Given
         $defaultTags = ["abc" => 123];
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()), $defaultTags);
+        $inMemoryClient = new InMemoryClientAdapter($defaultTags);
 
         // When
         $inMemoryClient->decrement("some-stat", tags: ["hello" => "world"]);

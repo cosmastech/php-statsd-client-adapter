@@ -3,6 +3,8 @@
 namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
@@ -16,7 +18,12 @@ class InMemorySetTest extends BaseTestCase
     {
         // Given
         $stubDateTime = new DateTimeImmutable("2018-02-13 18:50:00");
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub($stubDateTime));
+        $inMemoryClient = new InMemoryClientAdapter(
+            [],
+            new InMemoryStatsRecord(),
+            new NoopTagNormalizer(),
+            new ClockStub($stubDateTime)
+        );
 
         // When
         $inMemoryClient->set("set-test", 14);
@@ -37,7 +44,12 @@ class InMemorySetTest extends BaseTestCase
     public function normalizesTags(): void
     {
         // Given
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()));
+        $inMemoryClient = new InMemoryClientAdapter(
+            [],
+            new InMemoryStatsRecord(),
+            new NoopTagNormalizer(),
+            new ClockStub(new DateTimeImmutable())
+        );
 
         // And
         $tagNormalizerSpy = new TagNormalizerSpy();
@@ -55,7 +67,12 @@ class InMemorySetTest extends BaseTestCase
     {
         // Given
         $defaultTags = ["abc" => 123];
-        $inMemoryClient = new InMemoryClientAdapter(new ClockStub(new DateTimeImmutable()), $defaultTags);
+        $inMemoryClient = new InMemoryClientAdapter(
+            $defaultTags,
+            new InMemoryStatsRecord(),
+            new NoopTagNormalizer(),
+            new ClockStub(new DateTimeImmutable())
+        );
 
         // When
         $inMemoryClient->set(stat: "some-stat", value: 993.3, tags: ["hello" => "world"]);
