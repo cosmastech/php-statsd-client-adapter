@@ -27,7 +27,7 @@ class InMemoryTest extends BaseTestCase
     }
 
     #[Test]
-    public function reset_clearsStats(): void
+    public function flush_clearsStats(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter();
@@ -39,7 +39,7 @@ class InMemoryTest extends BaseTestCase
         $inMemoryClient->histogram("histogram", 259444);
 
         // When
-        $inMemoryClient->reset();
+        $inMemoryClient->flush();
 
         // Then
         self::assertEachRecordWithinStatsRecordIsEmpty($inMemoryClient->getStats());
@@ -77,7 +77,7 @@ class InMemoryTest extends BaseTestCase
 
     private static function assertEachRecordWithinStatsRecordIsEmpty(InMemoryStatsRecord $record): void
     {
-        self::assertEmpty($record->distribution);
+        self::assertEmpty($record->getDistributions());
         self::assertEmpty($record->getCounts());
         self::assertEmpty($record->getHistograms());
         self::assertEmpty($record->getSets());

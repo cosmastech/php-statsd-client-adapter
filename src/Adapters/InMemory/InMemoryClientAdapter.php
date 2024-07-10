@@ -50,7 +50,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * Clear stats from memory.
      */
-    public function reset(): void
+    public function flush(): void
     {
         $this->stats->flush();
     }
@@ -108,12 +108,14 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
      */
     public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->distribution[] = new InMemoryDistributionRecord(
-            $stat,
-            $value,
-            $sampleRate,
-            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
-            $this->clock->now()
+        $this->stats->recordDistribution(
+            new InMemoryDistributionRecord(
+                $stat,
+                $value,
+                $sampleRate,
+                $this->normalizeTags($this->mergeWithDefaultTags($tags)),
+                $this->clock->now()
+            )
         );
     }
 

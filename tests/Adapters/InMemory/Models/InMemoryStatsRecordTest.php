@@ -92,7 +92,7 @@ class InMemoryStatsRecordTest extends BaseTestCase
         self::assertEquals([], $record->getGauges());
         self::assertEquals([], $record->getSets());
         self::assertEquals([], $record->getHistograms());
-        self::assertEquals([], $record->distribution);
+        self::assertEquals([], $record->getDistributions());
     }
 
     private function fillStatsRecord(InMemoryStatsRecord $record): void
@@ -145,12 +145,14 @@ class InMemoryStatsRecordTest extends BaseTestCase
             new DateTimeImmutable()
         ));
 
-        $record->distribution[] = new InMemoryDistributionRecord(
-            "irrelevant",
-            1.0,
-            1.0,
-            [],
-            new DateTimeImmutable()
+        $record->recordDistribution(
+            new InMemoryDistributionRecord(
+                "irrelevant",
+                1.0,
+                1.0,
+                [],
+                new DateTimeImmutable()
+            )
         );
     }
 }

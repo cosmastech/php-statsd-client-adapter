@@ -2,11 +2,15 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models;
 
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\Concerns\GetAndSetRecordsTrait;
+
 /**
  * Container class for storing all stats.
  */
 class InMemoryStatsRecord
 {
+    use GetAndSetRecordsTrait;
+
     /** @var array<int, InMemoryTimingRecord> */
     protected array $timing;
 
@@ -23,80 +27,24 @@ class InMemoryStatsRecord
     protected array $histogram;
 
     /** @var array<int, InMemoryDistributionRecord> */
-    public array $distribution;
+    protected array $distribution;
 
     public function __construct()
     {
-        $this->flush();
+        $this->resetStats();
     }
-
-    public function recordTiming(InMemoryTimingRecord $inMemoryTimingRecord): void
-    {
-        $this->timing[] = $inMemoryTimingRecord;
-    }
-
-    /**
-     * @return array<int, InMemoryTimingRecord>
-     */
-    public function getTimings(): array
-    {
-        return $this->timing;
-    }
-
-    public function recordCount(InMemoryCountRecord $inMemoryCountRecord): void
-    {
-        $this->count[] = $inMemoryCountRecord;
-    }
-
-    /**
-     * @return array<int, InMemoryCountRecord>
-     */
-    public function getCounts(): array
-    {
-        return $this->count;
-    }
-
-    public function recordGauge(InMemoryGaugeRecord $inMemoryGaugeRecord): void
-    {
-        $this->gauge[] = $inMemoryGaugeRecord;
-    }
-
-    /**
-     * @return array<int, InMemoryGaugeRecord>
-     */
-    public function getGauges(): array
-    {
-        return $this->gauge;
-    }
-
-    public function recordSet(InMemorySetRecord $inMemorySetRecord): void
-    {
-        $this->set[] = $inMemorySetRecord;
-    }
-
-    /**
-     * @return array<int, InMemorySetRecord>
-     */
-    public function getSets(): array
-    {
-        return $this->set;
-    }
-
-    public function recordHistogram(InMemoryHistogramRecord $inMemoryHistogramRecord): void
-    {
-        $this->histogram[] = $inMemoryHistogramRecord;
-    }
-
-    /**
-     * @return array<int, InMemoryHistogramRecord>
-     */
-    public function getHistograms(): array
-    {
-        return $this->histogram;
-    }
-
 
     public function flush(): void
+    {
+        $this->resetStats();
+    }
+
+    /**
+     * Empty all stat array containers.
+     *
+     * @return void
+     */
+    protected function resetStats(): void
     {
         $this->timing = [];
         $this->count = [];
