@@ -94,7 +94,7 @@ class InMemoryTimingTest extends BaseTestCase
         $closure = fn () => "abc";
 
         // When
-        $actualReturn = $inMemoryClient->time("my-stat", $closure);
+        $actualReturn = $inMemoryClient->time($closure, "my-stat");
 
         // Then
         self::assertEquals("abc", $actualReturn);

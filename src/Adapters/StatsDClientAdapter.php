@@ -16,13 +16,13 @@ interface StatsDClientAdapter
     /**
      * Record a timing stat for the duration of the $closure.
      *
-     * @param  string  $stat
      * @param  callable  $closure
+     * @param  string  $stat
      * @param  float  $sampleRate
      * @param  array<mixed, mixed>  $tags
      * @return mixed The return value of $closure
      */
-    public function time(string $stat, callable $closure, float $sampleRate = 1.0, array $tags = []);
+    public function time(callable $closure, string $stat, float $sampleRate = 1.0, array $tags = []);
 
     /**
      * @param  string  $stat

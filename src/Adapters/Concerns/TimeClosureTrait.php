@@ -7,7 +7,7 @@ trait TimeClosureTrait
     /**
      * @inheritDoc
      */
-    public function time(string $stat, callable $closure, float $sampleRate = 1.0, array $tags = [])
+    public function time(callable $closure, string $stat, float $sampleRate = 1.0, array $tags = [])
     {
         $startTime = intval($this->clock->now()->format("Uv"));
 
