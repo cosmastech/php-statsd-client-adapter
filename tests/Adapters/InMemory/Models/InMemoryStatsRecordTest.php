@@ -12,11 +12,53 @@ use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryTimingRecord
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 #[CoversClass(InMemoryStatsRecord::class)]
 class InMemoryStatsRecordTest extends BaseTestCase
 {
+    #[Test]
+    #[DataProvider("recordMethodDataProvider")]
+    public function record_storesRecord(object $metricRecord, string $recordMethodName, string $getMethodName): void
+    {
+        // Given
+        $record = new InMemoryStatsRecord();
+
+        // When
+        $record->{$recordMethodName}($metricRecord);
+
+        // Then
+        $metricRecordings = $record->{$getMethodName}();
+        self::assertCount(1, $metricRecordings);
+        self::assertSame($metricRecord, $metricRecordings[0]);
+    }
+
+    /**
+     * @return array<string, array<int, mixed>>
+     */
+    public static function recordMethodDataProvider(): array
+    {
+        $datetime = new DateTimeImmutable();
+
+        return [
+            "timing" => [
+                new InMemoryTimingRecord("irrelevant", 12.1, 1.0, [], $datetime),
+                "recordTiming",
+                "getTimings",
+            ],
+            "count" => [
+                new InMemoryCountRecord("irrelevant", 483, 0.99, [], $datetime),
+                "recordCount",
+                "getCounts",
+            ],
+            "gauge" => [
+                new InMemoryGaugeRecord("irrelevant", 33.2, 1.0, [], $datetime),
+                "recordGauge",
+                "getGauges",
+            ],
+        ];
+    }
     #[Test]
     public function flush_emptiesAllInMemoryRecords(): void
     {
