@@ -25,6 +25,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     use TimeClosureTrait;
 
     protected InMemoryStatsRecord $stats;
+
     protected readonly ClockInterface $clock;
 
     /**
@@ -35,9 +36,18 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     {
         $this->clock = $clock;
 
-        $this->reset();
         $this->setTagNormalizer(new NoopTagNormalizer());
         $this->setDefaultTags($defaultTags);
+
+        $this->reset();
+    }
+
+    /**
+     * Clear stats from memory.
+     */
+    public function reset(): void
+    {
+        $this->stats = new InMemoryStatsRecord();
     }
 
     /**
@@ -68,6 +78,9 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->histogram[] = new InMemoryHistogramRecord(
@@ -79,6 +92,9 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->distribution[] = new InMemoryDistributionRecord(
@@ -90,6 +106,9 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->set[] = new InMemorySetRecord(
@@ -101,11 +120,17 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function increment(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
     {
         $this->updateStats($stats, $value, $sampleRate, $tags);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = -1): void
     {
         if ($value > 0) {
@@ -134,16 +159,17 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         }
     }
 
+    /**
+     * Get all recorded stats.
+     */
     public function getStats(): InMemoryStatsRecord
     {
         return $this->stats;
     }
 
-    public function reset(): void
-    {
-        $this->stats = new InMemoryStatsRecord();
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function getClient(): null
     {
         return null;

@@ -2,6 +2,9 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models;
 
+/**
+ * Container class for storing all stats.
+ */
 class InMemoryStatsRecord
 {
     public function __construct(
