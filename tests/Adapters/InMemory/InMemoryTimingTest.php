@@ -64,4 +64,28 @@ class InMemoryTimingTest extends BaseTestCase
         $timingStat = $inMemoryClient->getStats()->timing[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $timingStat->tags);
     }
+
+    #[Test]
+    public function time_storesDurationOfClosure(): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter(
+            new ClockStub([
+                new DateTimeImmutable("2024-02-13 01:01:00"),
+                new DateTimeImmutable("2024-02-13 01:01:01"),
+            ])
+        );
+
+        // And
+        $closure = fn () => "abc";
+
+        // When
+        $actualReturn = $inMemoryClient->time("my-stat", $closure);
+
+        // Then
+        self::assertEquals("abc", $actualReturn);
+
+        $timingRecord = $inMemoryClient->getStats()->timing[0];
+        self::assertEquals(1000, $timingRecord->durationMilliseconds);
+    }
 }

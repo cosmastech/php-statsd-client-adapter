@@ -8,7 +8,10 @@ use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
+use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\Utility\Clock;
 use DataDog\DogStatsd;
+use Psr\Clock\ClockInterface;
 
 class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
@@ -19,10 +22,16 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @param  DogStatsd  $datadogClient
      * @param  array<mixed, mixed>  $defaultTags
+     * @param  ClockInterface  $clock
+     * @param  TagNormalizer  $tagNormalizer
      */
-    public function __construct(protected readonly DogStatsd $datadogClient, array $defaultTags = [])
-    {
-        $this->tagNormalizer = new NoopTagNormalizer();
+    public function __construct(
+        protected readonly DogStatsd $datadogClient,
+        array $defaultTags = [],
+        protected readonly ClockInterface $clock = new Clock(),
+        TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+    ) {
+        $this->setTagNormalizer($tagNormalizer);
         $this->setDefaultTags($defaultTags);
     }
 

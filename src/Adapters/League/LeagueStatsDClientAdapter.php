@@ -10,12 +10,14 @@ use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\Utility\Clock;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\SampleRateSendDecider;
 use League\StatsD\Client;
 use League\StatsD\Exception\ConfigurationException;
 use League\StatsD\Exception\ConnectionException;
 use League\StatsD\StatsDClient as LeagueStatsDClientInterface;
+use Psr\Clock\ClockInterface;
 
 class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
@@ -33,12 +35,14 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      * @param  SampleRateSendDeciderInterface  $sampleRateSendDecider
      * @param  array<mixed, mixed>  $defaultTags
      * @param  TagNormalizer  $tagNormalizer
+     * @param  ClockInterface  $clock
      */
     public function __construct(
         protected readonly LeagueStatsDClientInterface $leagueStatsDClient,
         protected readonly SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
         array $defaultTags = [],
         TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+        protected readonly ClockInterface $clock = new Clock(),
     ) {
         $this->setDefaultTags($defaultTags);
         $this->setTagNormalizer($tagNormalizer);

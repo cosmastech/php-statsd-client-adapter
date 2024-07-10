@@ -9,13 +9,13 @@ trait TimeClosureTrait
      */
     public function time(string $stat, callable $closure, float $sampleRate = 1.0, array $tags = [])
     {
-        $startTime = microtime(true);
+        $startTime = intval($this->clock->now()->format("Uv"));
 
         $result = $closure();
 
         $this->timing(
             $stat,
-            (microtime(true) - $startTime) * 1000,
+            (intval($this->clock->now()->format("Uv")) - $startTime),
             $sampleRate,
             $tags
         );
