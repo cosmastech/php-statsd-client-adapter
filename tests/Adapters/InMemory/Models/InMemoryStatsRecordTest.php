@@ -57,6 +57,11 @@ class InMemoryStatsRecordTest extends BaseTestCase
                 "recordGauge",
                 "getGauges",
             ],
+            "set" => [
+                new InMemorySetRecord("irrelevant-set", "unique value", 1.33, [], $datetime),
+                "recordSet",
+                "getSets",
+            ],
         ];
     }
     #[Test]
@@ -75,7 +80,7 @@ class InMemoryStatsRecordTest extends BaseTestCase
         self::assertEquals([], $record->getTimings());
         self::assertEquals([], $record->getCounts());
         self::assertEquals([], $record->getGauges());
-        self::assertEquals([], $record->set);
+        self::assertEquals([], $record->getSets());
         self::assertEquals([], $record->histogram);
         self::assertEquals([], $record->distribution);
     }
@@ -112,12 +117,14 @@ class InMemoryStatsRecordTest extends BaseTestCase
             )
         );
 
-        $record->set[] = new InMemorySetRecord(
-            "irrelevant",
-            "abc",
-            1.0,
-            [],
-            new DateTimeImmutable()
+        $record->recordSet(
+            new InMemorySetRecord(
+                "irrelevant",
+                "abc",
+                1.0,
+                [],
+                new DateTimeImmutable()
+            )
         );
 
         $record->histogram[] = new InMemoryHistogramRecord(

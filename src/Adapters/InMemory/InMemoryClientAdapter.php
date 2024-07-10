@@ -120,12 +120,14 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
      */
     public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
-        $this->stats->set[] = new InMemorySetRecord(
-            $stat,
-            $value,
-            $sampleRate,
-            $this->normalizeTags($this->mergeWithDefaultTags($tags)),
-            $this->clock->now()
+        $this->stats->recordSet(
+            new InMemorySetRecord(
+                $stat,
+                $value,
+                $sampleRate,
+                $this->normalizeTags($this->mergeWithDefaultTags($tags)),
+                $this->clock->now()
+            )
         );
     }
 

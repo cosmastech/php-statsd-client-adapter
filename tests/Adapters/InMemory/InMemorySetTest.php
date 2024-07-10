@@ -30,9 +30,9 @@ class InMemorySetTest extends BaseTestCase
 
         // Then
         $statsRecord = $inMemoryClient->getStats();
-        self::assertCount(1, $statsRecord->set);
+        self::assertCount(1, $statsRecord->getSets());
 
-        $setRecord = $statsRecord->set[0];
+        $setRecord = $statsRecord->getSets()[0];
         self::assertEquals("set-test", $setRecord->stat);
         self::assertEquals(14, $setRecord->value);
         self::assertEquals(1, $setRecord->sampleRate);
@@ -78,7 +78,7 @@ class InMemorySetTest extends BaseTestCase
         $inMemoryClient->set(stat: "some-stat", value: 993.3, tags: ["hello" => "world"]);
 
         // Then
-        $setStat = $inMemoryClient->getStats()->set[0];
+        $setStat = $inMemoryClient->getStats()->getSets()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $setStat->tags);
     }
 }

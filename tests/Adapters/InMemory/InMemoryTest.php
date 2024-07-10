@@ -80,7 +80,7 @@ class InMemoryTest extends BaseTestCase
         self::assertEmpty($record->distribution);
         self::assertEmpty($record->getCounts());
         self::assertEmpty($record->histogram);
-        self::assertEmpty($record->set);
+        self::assertEmpty($record->getSets());
         self::assertEmpty($record->getTimings());
         self::assertEmpty($record->getGauges());
     }

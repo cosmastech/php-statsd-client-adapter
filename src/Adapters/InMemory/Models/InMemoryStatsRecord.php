@@ -17,7 +17,7 @@ class InMemoryStatsRecord
     protected array $gauge;
 
     /** @var array<int, InMemorySetRecord> */
-    public array $set;
+    protected array $set;
 
     /** @var array<int, InMemoryHistogramRecord> */
     public array $histogram;
@@ -68,6 +68,21 @@ class InMemoryStatsRecord
     {
         return $this->gauge;
     }
+
+    public function recordSet(InMemorySetRecord $inMemorySetRecord): void
+    {
+        $this->set[] = $inMemorySetRecord;
+    }
+
+    /**
+     * @return array<int, InMemorySetRecord>
+     */
+    public function getSets(): array
+    {
+        return $this->set;
+    }
+
+
 
     public function flush(): void
     {
