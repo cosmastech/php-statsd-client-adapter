@@ -16,6 +16,7 @@ Nor does the DataDog client allow for pushing to another StatsD implementation e
 
 The aim here is to allow for a single interface that can wrap around both, and be easily extended for different implementations.
 
+If you would like to use this library in Laravel, check out [laravel-statsd-adapter](https://github.com/cosmastech/laravel-statsd-adapter).
 
 ## Adapters
 
