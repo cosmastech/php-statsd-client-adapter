@@ -2,9 +2,10 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models;
 
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\Contracts\RecordInterface;
 use DateTimeImmutable;
 
-readonly class InMemoryTimingRecord
+readonly class InMemoryTimingRecord implements RecordInterface
 {
     /**
      * @param  string  $stat
