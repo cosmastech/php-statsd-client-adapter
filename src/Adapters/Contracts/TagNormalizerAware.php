@@ -2,9 +2,9 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\Contracts;
 
-use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\Normalizer;
 
 interface TagNormalizerAware
 {
-    public function setTagNormalizer(TagNormalizer $tagNormalizer): void;
+    public function setTagNormalizer(Normalizer $tagNormalizer): void;
 }

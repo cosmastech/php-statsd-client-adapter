@@ -2,9 +2,9 @@
 
 namespace Cosmastech\StatsDClientAdapter\Tests\Doubles;
 
-use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\Normalizer;
 
-class TagNormalizerSpy implements TagNormalizer
+class NormalizerSpy implements Normalizer
 {
     /** @var array<mixed, mixed> */
     private array $normalizeCalls = [];

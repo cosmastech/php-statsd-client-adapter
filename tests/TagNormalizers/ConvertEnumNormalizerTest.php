@@ -2,7 +2,7 @@
 
 namespace Cosmastech\StatsDClientAdapter\Tests\TagNormalizers;
 
-use Cosmastech\StatsDClientAdapter\TagNormalizers\ConvertEnumNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\ConvertEnumNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\IntBackedEnum;
 use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\StringBackedEnum;
 use Cosmastech\StatsDClientAdapter\Tests\TagNormalizers\Enums\UnbackedEnum;

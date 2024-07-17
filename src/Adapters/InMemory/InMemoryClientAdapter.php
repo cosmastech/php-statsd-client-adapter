@@ -14,10 +14,11 @@ use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemorySetRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryTimingRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
-use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
-use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\NoopNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\Normalizer;
 use Cosmastech\StatsDClientAdapter\Utility\Clock;
 use Psr\Clock\ClockInterface;
+use UnitEnum;
 
 class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
@@ -32,13 +33,13 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @param  array<mixed, mixed>  $defaultTags
      * @param  InMemoryStatsRecord  $inMemoryStatsRecord
-     * @param  TagNormalizer  $tagNormalizer
+     * @param  Normalizer  $tagNormalizer
      * @param  ClockInterface  $clock
      */
     public function __construct(
         array $defaultTags = [],
         InMemoryStatsRecord $inMemoryStatsRecord = new InMemoryStatsRecord(),
-        TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+        Normalizer $tagNormalizer = new NoopNormalizer(),
         ClockInterface $clock = new Clock()
     ) {
         $this->setDefaultTags($defaultTags);
@@ -58,7 +59,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
+    public function timing(string|UnitEnum $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordTiming(
             new InMemoryTimingRecord(
@@ -74,7 +75,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function gauge(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordGauge(
             new InMemoryGaugeRecord(
@@ -90,7 +91,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function histogram(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordHistogram(
             new InMemoryHistogramRecord(
@@ -106,7 +107,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function distribution(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordDistribution(
             new InMemoryDistributionRecord(
@@ -122,7 +123,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
+    public function set(string|UnitEnum $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordSet(
             new InMemorySetRecord(
@@ -138,7 +139,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function increment(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
+    public function increment(array|string|UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
     {
         $this->updateStats($stats, $value, $sampleRate, $tags);
     }
@@ -146,7 +147,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = -1): void
+    public function decrement(array|string|UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = -1): void
     {
         if ($value > 0) {
             $value *= -1;
@@ -158,7 +159,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function updateStats(array|string $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
+    public function updateStats(array|string|UnitEnum $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
     {
         $stats = (array) $stats;
         $now = $this->clock->now();

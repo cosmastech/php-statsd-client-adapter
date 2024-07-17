@@ -8,8 +8,8 @@ use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
 use Cosmastech\StatsDClientAdapter\Adapters\StatsDClientAdapter;
-use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
-use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\NoopNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\Normalizer;
 use Cosmastech\StatsDClientAdapter\Utility\Clock;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\Contracts\SampleRateSendDecider as SampleRateSendDeciderInterface;
 use Cosmastech\StatsDClientAdapter\Utility\SampleRateDecider\SampleRateSendDecider;
@@ -18,6 +18,7 @@ use League\StatsD\Exception\ConfigurationException;
 use League\StatsD\Exception\ConnectionException;
 use League\StatsD\StatsDClient as LeagueStatsDClientInterface;
 use Psr\Clock\ClockInterface;
+use UnitEnum;
 
 class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
@@ -40,14 +41,14 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      * @param  LeagueStatsDClientInterface  $leagueStatsDClient
      * @param  array<mixed, mixed>  $defaultTags
      * @param  SampleRateSendDeciderInterface  $sampleRateSendDecider
-     * @param  TagNormalizer  $tagNormalizer
+     * @param  Normalizer  $tagNormalizer
      * @param  ClockInterface  $clock
      */
     public function __construct(
         LeagueStatsDClientInterface $leagueStatsDClient,
         array $defaultTags = [],
         SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
-        TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+        Normalizer $tagNormalizer = new NoopNormalizer(),
         ClockInterface $clock = new Clock(),
     ) {
         $this->leagueStatsDClient = $leagueStatsDClient;
@@ -62,7 +63,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      * @param  array<mixed, mixed>  $defaultTags
      * @param  SampleRateSendDeciderInterface  $sampleRateSendDecider
      * @param  string  $instanceName
-     * @param  TagNormalizer  $tagNormalizer
+     * @param  Normalizer  $tagNormalizer
      * @param  ClockInterface  $clock
      * @return self
      *
@@ -73,7 +74,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         array $defaultTags = [],
         SampleRateSendDeciderInterface $sampleRateSendDecider = new SampleRateSendDecider(),
         string $instanceName = 'default',
-        TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
+        Normalizer $tagNormalizer = new NoopNormalizer(),
         ClockInterface $clock = new Clock(),
     ): self {
         /** @var Client $instance */
@@ -126,7 +127,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
 
 
     /**
-     * @param  string  $stat
+     * @param  string|UnitEnum  $stat
      * @param  float  $durationMs
      * @param  float  $sampleRate
      * @param  array<mixed, mixed>  $tags
@@ -134,7 +135,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      *
      * @throws ConnectionException
      */
-    public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
+    public function timing(string|UnitEnum $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
         if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
@@ -150,7 +151,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function gauge(string|\UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
@@ -163,12 +164,12 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         );
     }
 
-    public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function histogram(string|\UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->handleUnavailableStat($stat, $value, $sampleRate, $tags);
     }
 
-    public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function distribution(string|\UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->handleUnavailableStat($stat, $value, $sampleRate, $tags);
     }
@@ -176,7 +177,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
+    public function set(string|\UnitEnum $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
         if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
@@ -192,7 +193,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function increment(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
+    public function increment(array|string|\UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
     {
         $this->leagueStatsDClient->increment(
             $stats,
@@ -205,7 +206,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
+    public function decrement(array|string|\UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
     {
         $this->leagueStatsDClient->decrement(
             $stats,
@@ -218,7 +219,7 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function updateStats(array|string $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
+    public function updateStats(array|string|\UnitEnum $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->increment(
             $stats,

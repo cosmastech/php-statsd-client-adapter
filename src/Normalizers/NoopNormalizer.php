@@ -1,8 +1,8 @@
 <?php
 
-namespace Cosmastech\StatsDClientAdapter\TagNormalizers;
+namespace Cosmastech\StatsDClientAdapter\Normalizers;
 
-class NoopTagNormalizer implements TagNormalizer
+class NoopNormalizer implements Normalizer
 {
     /**
      * @param  array<mixed, mixed>  $tags

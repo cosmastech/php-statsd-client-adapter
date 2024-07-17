@@ -4,10 +4,10 @@ namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
-use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\NoopNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
-use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
+use Cosmastech\StatsDClientAdapter\Tests\Doubles\NormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -44,7 +44,7 @@ class InMemoryHistogramTest extends BaseTestCase
     public function normalizesTags(): void
     {
         // Given
-        $tagNormalizerSpy = new TagNormalizerSpy();
+        $tagNormalizerSpy = new NormalizerSpy();
 
         // And
         $inMemoryClient = new InMemoryClientAdapter(tagNormalizer: $tagNormalizerSpy);
@@ -64,7 +64,7 @@ class InMemoryHistogramTest extends BaseTestCase
         $inMemoryClient = new InMemoryClientAdapter(
             $defaultTags,
             new InMemoryStatsRecord(),
-            new NoopTagNormalizer(),
+            new NoopNormalizer(),
             new ClockStub(new DateTimeImmutable())
         );
 

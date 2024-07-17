@@ -5,7 +5,7 @@ namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
-use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
+use Cosmastech\StatsDClientAdapter\Tests\Doubles\NormalizerSpy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -52,7 +52,7 @@ class InMemoryTest extends BaseTestCase
         $inMemoryClient = new InMemoryClientAdapter();
 
         // And
-        $tagNormalizerSpy = new TagNormalizerSpy();
+        $tagNormalizerSpy = new NormalizerSpy();
         $inMemoryClient->setTagNormalizer($tagNormalizerSpy);
 
         // When

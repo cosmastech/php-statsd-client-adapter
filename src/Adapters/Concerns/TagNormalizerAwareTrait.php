@@ -2,13 +2,13 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\Concerns;
 
-use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
+use Cosmastech\StatsDClientAdapter\Normalizers\Normalizer;
 
 trait TagNormalizerAwareTrait
 {
-    protected TagNormalizer $tagNormalizer;
+    protected Normalizer $tagNormalizer;
 
-    public function setTagNormalizer(TagNormalizer $tagNormalizer): void
+    public function setTagNormalizer(Normalizer $tagNormalizer): void
     {
         $this->tagNormalizer = $tagNormalizer;
     }

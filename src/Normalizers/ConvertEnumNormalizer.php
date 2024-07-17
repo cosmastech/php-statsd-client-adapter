@@ -1,10 +1,10 @@
 <?php
 
-namespace Cosmastech\StatsDClientAdapter\TagNormalizers;
+namespace Cosmastech\StatsDClientAdapter\Normalizers;
 
 use Cosmastech\StatsDClientAdapter\Utility\EnumHelper;
 
-class ConvertEnumNormalizer implements TagNormalizer
+class ConvertEnumNormalizer implements Normalizer
 {
     /**
      * @param  array<mixed, mixed>  $tags
