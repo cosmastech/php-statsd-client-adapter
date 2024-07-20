@@ -12,11 +12,11 @@ class ConvertEnumNormalizer implements TagNormalizer
      */
     public function normalize(array $tags): array
     {
-        $toReturn = [];
+        $normalizedTags = [];
         foreach ($tags as $key => $value) {
-            $toReturn[$key] = EnumConverter::convertIfEnum($value);
+            $normalizedTags[$key] = EnumConverter::convertIfEnum($value);
         }
 
-        return $toReturn;
+        return $normalizedTags;
     }
 }
