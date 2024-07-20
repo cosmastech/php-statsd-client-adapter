@@ -2,6 +2,7 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory;
 
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\ConvertsStatTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
@@ -18,9 +19,11 @@ use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\TagNormalizer;
 use Cosmastech\StatsDClientAdapter\Utility\Clock;
 use Psr\Clock\ClockInterface;
+use UnitEnum;
 
 class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
+    use ConvertsStatTrait;
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
     use TimeClosureTrait;
@@ -58,11 +61,11 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function timing(string|\UnitEnum $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
+    public function timing(string|UnitEnum $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordTiming(
             new InMemoryTimingRecord(
-                $stat,
+                $this->convertStat($stat),
                 $durationMs,
                 $sampleRate,
                 $this->normalizeTags($this->mergeWithDefaultTags($tags)),
@@ -74,11 +77,11 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function gauge(string|\UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function gauge(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordGauge(
             new InMemoryGaugeRecord(
-                $stat,
+                $this->convertStat($stat),
                 $value,
                 $sampleRate,
                 $this->normalizeTags($this->mergeWithDefaultTags($tags)),
@@ -90,11 +93,11 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function histogram(string|\UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function histogram(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordHistogram(
             new InMemoryHistogramRecord(
-                $stat,
+                $this->convertStat($stat),
                 $value,
                 $sampleRate,
                 $this->normalizeTags($this->mergeWithDefaultTags($tags)),
@@ -106,11 +109,11 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function distribution(string|\UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
+    public function distribution(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordDistribution(
             new InMemoryDistributionRecord(
-                $stat,
+                $this->convertStat($stat),
                 $value,
                 $sampleRate,
                 $this->normalizeTags($this->mergeWithDefaultTags($tags)),
@@ -122,11 +125,11 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function set(string|\UnitEnum $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
+    public function set(string|UnitEnum $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
     {
         $this->stats->recordSet(
             new InMemorySetRecord(
-                $stat,
+                $this->convertStat($stat),
                 $value,
                 $sampleRate,
                 $this->normalizeTags($this->mergeWithDefaultTags($tags)),
@@ -138,27 +141,45 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * @inheritDoc
      */
-    public function increment(array|string|\UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
-    {
-        $this->updateStats($stats, $value, $sampleRate, $tags);
+    public function increment(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = 1
+    ): void {
+        $this->updateStats(
+            $this->convertStat($stats),
+            $value,
+            $sampleRate,
+            $tags
+        );
     }
 
     /**
      * @inheritDoc
      */
-    public function decrement(array|string|\UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = -1): void
-    {
+    public function decrement(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = -1
+    ): void {
         if ($value > 0) {
             $value *= -1;
         }
 
-        $this->updateStats($stats, $value, $sampleRate, $tags);
+        $this->updateStats(
+            $this->convertStat($stats),
+            $value,
+            $sampleRate,
+            $tags
+        );
     }
 
     /**
      * @inheritDoc
      */
-    public function updateStats(array|string|\UnitEnum $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
+    public function updateStats(array|string|UnitEnum $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
     {
         $stats = (array) $stats;
         $now = $this->clock->now();
@@ -166,7 +187,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         foreach ($stats as $stat) {
             $this->stats->recordCount(
                 new InMemoryCountRecord(
-                    $stat,
+                    $this->convertStat($stat),
                     $delta,
                     $sampleRate,
                     $this->normalizeTags($this->mergeWithDefaultTags($tags)),

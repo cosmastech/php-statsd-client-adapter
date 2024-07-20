@@ -104,14 +104,14 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     }
 
     /**
-     * @param  string  $stat
+     * @param  string|UnitEnum  $stat
      * @param  float  $value
      * @param  float  $sampleRate
      * @param  array<mixed, mixed>  $tags
      * @return void
      */
     protected function handleUnavailableStat(
-        string $stat,
+        string|UnitEnum $stat,
         float $value,
         float $sampleRate = 1.0,
         array $tags = []
