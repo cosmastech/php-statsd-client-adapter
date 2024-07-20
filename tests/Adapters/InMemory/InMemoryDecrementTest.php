@@ -113,11 +113,11 @@ class InMemoryDecrementTest extends BaseTestCase
         $inMemoryClient = new InMemoryClientAdapter();
 
         // When
-        $inMemoryClient->decrement([IntBackedEnum::TWO, StringBackedEnum::A, PlainUnitEnum::FIRST], value: 1994);
+        $inMemoryClient->decrement([IntBackedEnum::TWO, StringBackedEnum::A, PlainUnitEnum::FIRST, "hello"], value: 1994);
 
         // Then
         self::assertCount(
-            3,
+            4,
             /** @var array<int, InMemoryCountRecord> $countStats */
             $countStats = $inMemoryClient->getStats()->getCounts()
         );
@@ -127,5 +127,7 @@ class InMemoryDecrementTest extends BaseTestCase
         self::assertEquals(-1994, $countStats[1]->count);
         self::assertEquals("FIRST", $countStats[2]->stat);
         self::assertEquals(-1994, $countStats[2]->count);
+        self::assertEquals("hello", $countStats[3]->stat);
+        self::assertEquals(-1994, $countStats[3]->count);
     }
 }
