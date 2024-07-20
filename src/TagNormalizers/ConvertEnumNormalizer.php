@@ -14,14 +14,9 @@ class ConvertEnumNormalizer implements TagNormalizer
     {
         $toReturn = [];
         foreach ($tags as $key => $value) {
-            $toReturn[$key] = $this->convertEnumToName($value);
+            $toReturn[$key] = EnumConverter::convertIfEnum($value);
         }
 
         return $toReturn;
-    }
-
-    protected function convertEnumToName(mixed $value): mixed
-    {
-        return EnumConverter::convertIfEnum($value);
     }
 }
