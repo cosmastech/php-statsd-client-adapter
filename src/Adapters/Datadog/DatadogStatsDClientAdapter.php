@@ -47,8 +47,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function timing(string|UnitEnum $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function timing(
+        string|UnitEnum $stat,
+        float $durationMs,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->datadogClient->timing(
             $this->convertStat($stat),
             $durationMs,
@@ -60,8 +64,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function gauge(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function gauge(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->datadogClient->gauge(
             $this->convertStat($stat),
             $value,
@@ -73,8 +81,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function histogram(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function histogram(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->datadogClient->histogram(
             $this->convertStat($stat),
             $value,
@@ -86,8 +98,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function distribution(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function distribution(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->datadogClient->distribution(
             $this->convertStat($stat),
             $value,
@@ -99,8 +115,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function set(string|UnitEnum $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function set(
+        string|UnitEnum $stat,
+        float|string $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->datadogClient->set(
             $this->convertStat($stat),
             $value,
@@ -112,8 +132,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function increment(array|string|UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
-    {
+    public function increment(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = 1
+    ): void {
         $this->datadogClient->increment(
             $this->convertStat($stats),
             $sampleRate,
@@ -125,8 +149,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function decrement(array|string|UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = -1): void
-    {
+    public function decrement(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = -1
+    ): void {
         $this->datadogClient->decrement(
             $this->convertStat($stats),
             $sampleRate,
@@ -138,8 +166,12 @@ class DatadogStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAw
     /**
      * @inheritDoc
      */
-    public function updateStats(array|string|UnitEnum $stats, int $delta = 1, $sampleRate = 1.0, array $tags = null): void
-    {
+    public function updateStats(
+        array|string|UnitEnum $stats,
+        int $delta = 1,
+        $sampleRate = 1.0,
+        array $tags = null
+    ): void {
         $this->datadogClient->updateStats(
             $this->convertStat($stats),
             $delta,
