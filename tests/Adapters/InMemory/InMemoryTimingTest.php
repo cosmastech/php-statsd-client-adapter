@@ -6,9 +6,11 @@ use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Tests\DataProviders\EnumProvider;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
 
 class InMemoryTimingTest extends BaseTestCase
@@ -101,5 +103,20 @@ class InMemoryTimingTest extends BaseTestCase
 
         $timingRecord = $inMemoryClient->getStats()->getTimings()[0];
         self::assertEquals(1000, $timingRecord->durationMilliseconds);
+    }
+
+    #[Test]
+    #[DataProviderExternal(EnumProvider::class, 'differentEnumTypesAndExpectedStringDataProvider')]
+    public function enumAsStat_recordsStatAsString(\UnitEnum $case, string $converted): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter();
+
+        // When
+        $inMemoryClient->time(fn () => "irrelevant", $case);
+
+        // Then
+        $countStat = $inMemoryClient->getStats()->getTimings()[0];
+        self::assertEqualsCanonicalizing($converted, $countStat->stat);
     }
 }
