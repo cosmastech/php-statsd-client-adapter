@@ -211,7 +211,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
         foreach ($stats as $stat) {
             $this->stats->recordCount(
                 new InMemoryCountRecord(
-                    $this->convertStat($stat),
+                    $this->convertStat($stat), /** @phpstan-ignore argument.type */
                     $delta,
                     $sampleRate,
                     $this->normalizeTags($this->mergeWithDefaultTags($tags)),

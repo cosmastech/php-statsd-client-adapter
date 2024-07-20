@@ -6,12 +6,17 @@ use Cosmastech\StatsDClientAdapter\Utility\EnumConverter;
 
 trait ConvertsStatTrait
 {
-    protected function convertStat(mixed $value): mixed
+    /**
+     * @param  mixed  $value
+     * @return string|array<int, string>
+     * @phpstan-return ($value is array ? array<int, string> : string)
+     */
+    protected function convertStat(mixed $value): string|array
     {
         if (is_array($value) && array_is_list($value)) {
-            return array_map($this->convertStat(...), $value);
+            return array_map($this->convertStat(...), $value); /* @phpstan-ignore return.type */
         }
 
-        return EnumConverter::convertIfEnum($value);
+        return (string) EnumConverter::convertIfEnum($value);
     }
 }
