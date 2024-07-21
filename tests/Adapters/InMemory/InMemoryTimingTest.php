@@ -12,6 +12,7 @@ use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
+use UnitEnum;
 
 class InMemoryTimingTest extends BaseTestCase
 {
@@ -81,7 +82,7 @@ class InMemoryTimingTest extends BaseTestCase
     }
 
     #[Test]
-    public function time_storesDurationOfClosure(): void
+    public function time_recordsDurationOfClosure(): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter(
@@ -107,7 +108,7 @@ class InMemoryTimingTest extends BaseTestCase
 
     #[Test]
     #[DataProviderExternal(EnumProvider::class, 'differentEnumTypesAndExpectedStringDataProvider')]
-    public function enumAsStat_recordsStatAsString(\UnitEnum $case, string $converted): void
+    public function enumAsStat_recordsStatAsString(UnitEnum $case, string $converted): void
     {
         // Given
         $inMemoryClient = new InMemoryClientAdapter();
