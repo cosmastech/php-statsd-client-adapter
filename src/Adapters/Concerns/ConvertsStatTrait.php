@@ -13,10 +13,20 @@ trait ConvertsStatTrait
      */
     protected function convertStat(mixed $value): string|array
     {
-        if (is_array($value) && array_is_list($value)) {
-            return array_map($this->convertStat(...), $value); /* @phpstan-ignore return.type */
+        if (is_array($value)) {
+            $convertedStats = [];
+            foreach($value as $element) {
+                $convertedStats[] = $this->convertValueToString($element);
+            }
+
+            return $convertedStats;
         }
 
+        return $this->convertValueToString($value);
+    }
+
+    protected function convertValueToString(mixed $value): string
+    {
         return (string) EnumConverter::convertIfEnum($value);
     }
 }
