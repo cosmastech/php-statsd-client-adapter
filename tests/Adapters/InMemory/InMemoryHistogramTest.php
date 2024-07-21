@@ -6,10 +6,13 @@ use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Tests\DataProviders\EnumProvider;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
+use UnitEnum;
 
 class InMemoryHistogramTest extends BaseTestCase
 {
@@ -74,5 +77,20 @@ class InMemoryHistogramTest extends BaseTestCase
         // Then
         $histogramStat = $inMemoryClient->getStats()->getHistograms()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $histogramStat->tags);
+    }
+
+    #[Test]
+    #[DataProviderExternal(EnumProvider::class, 'differentEnumTypesAndExpectedStringDataProvider')]
+    public function enumAsStat_recordsStatAsString(UnitEnum $case, string $converted): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter();
+
+        // When
+        $inMemoryClient->histogram($case, value: 12.4);
+
+        // Then
+        $histogramRecord = $inMemoryClient->getStats()->getHistograms()[0];
+        self::assertEqualsCanonicalizing($converted, $histogramRecord->stat);
     }
 }

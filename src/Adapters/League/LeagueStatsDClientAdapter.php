@@ -3,6 +3,7 @@
 namespace Cosmastech\StatsDClientAdapter\Adapters\League;
 
 use Closure;
+use Cosmastech\StatsDClientAdapter\Adapters\Concerns\ConvertsStatTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
@@ -18,9 +19,11 @@ use League\StatsD\Exception\ConfigurationException;
 use League\StatsD\Exception\ConnectionException;
 use League\StatsD\StatsDClient as LeagueStatsDClientInterface;
 use Psr\Clock\ClockInterface;
+use UnitEnum;
 
 class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 {
+    use ConvertsStatTrait;
     use HasDefaultTagsTrait;
     use TagNormalizerAwareTrait;
     use TimeClosureTrait;
@@ -101,19 +104,24 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     }
 
     /**
-     * @param  string  $stat
+     * @param  string|UnitEnum  $stat
      * @param  float  $value
      * @param  float  $sampleRate
      * @param  array<mixed, mixed>  $tags
      * @return void
      */
     protected function handleUnavailableStat(
-        string $stat,
+        string|UnitEnum $stat,
         float $value,
         float $sampleRate = 1.0,
         array $tags = []
     ): void {
-        $this->getUnavailableStatHandler()($stat, $value, $sampleRate, $tags);
+        $this->getUnavailableStatHandler()(
+            $this->convertStat($stat),
+            $value,
+            $sampleRate,
+            $tags
+        );
     }
 
     /**
@@ -124,9 +132,8 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
         return $this->unavailableStatHandler ?? function (): void {};
     }
 
-
     /**
-     * @param  string  $stat
+     * @param  string|UnitEnum  $stat
      * @param  float  $durationMs
      * @param  float  $sampleRate
      * @param  array<mixed, mixed>  $tags
@@ -134,14 +141,18 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
      *
      * @throws ConnectionException
      */
-    public function timing(string $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function timing(
+        string|UnitEnum $stat,
+        float $durationMs,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
         }
 
         $this->leagueStatsDClient->timing(
-            $stat,
+            $this->convertStat($stat),
             $durationMs,
             $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
@@ -150,40 +161,56 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function gauge(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function gauge(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
         }
 
         $this->leagueStatsDClient->gauge(
-            $stat,
+            $this->convertStat($stat),
             $value,
             $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
     }
 
-    public function histogram(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function histogram(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->handleUnavailableStat($stat, $value, $sampleRate, $tags);
     }
 
-    public function distribution(string $stat, float $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function distribution(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->handleUnavailableStat($stat, $value, $sampleRate, $tags);
     }
 
     /**
      * @throws ConnectionException
      */
-    public function set(string $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function set(
+        string|UnitEnum $stat,
+        float|string $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         if (! $this->sampleRateSendDecider->decide($sampleRate)) {
             return;
         }
 
         $this->leagueStatsDClient->set(
-            $stat,
+            $this->convertStat($stat),
             $value,
             $this->normalizeTags($this->mergeWithDefaultTags($tags))
         );
@@ -192,10 +219,14 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function increment(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
-    {
+    public function increment(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = 1
+    ): void {
         $this->leagueStatsDClient->increment(
-            $stats,
+            $this->convertStat($stats),
             $value,
             $sampleRate,
             $this->normalizeTags($this->mergeWithDefaultTags($tags))
@@ -205,10 +236,14 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function decrement(array|string $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void
-    {
+    public function decrement(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = 1
+    ): void {
         $this->leagueStatsDClient->decrement(
-            $stats,
+            $this->convertStat($stats),
             $value,
             $sampleRate,
             $this->normalizeTags($this->mergeWithDefaultTags($tags))
@@ -218,10 +253,14 @@ class LeagueStatsDClientAdapter implements StatsDClientAdapter, TagNormalizerAwa
     /**
      * @throws ConnectionException
      */
-    public function updateStats(array|string $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void
-    {
+    public function updateStats(
+        array|string|UnitEnum $stats,
+        int $delta = 1,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void {
         $this->increment(
-            $stats,
+            $this->convertStat($stats),
             $sampleRate,
             $this->normalizeTags($this->mergeWithDefaultTags($tags)),
             $delta

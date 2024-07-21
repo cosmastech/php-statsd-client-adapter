@@ -3,13 +3,20 @@
 namespace Cosmastech\StatsDClientAdapter\Tests\Adapters\InMemory;
 
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryCountRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Tests\DataProviders\EnumProvider;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
+use Cosmastech\StatsDClientAdapter\Tests\Enums\IntBackedEnum;
+use Cosmastech\StatsDClientAdapter\Tests\Enums\PlainUnitEnum;
+use Cosmastech\StatsDClientAdapter\Tests\Enums\StringBackedEnum;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
+use UnitEnum;
 
 class InMemoryDecrementTest extends BaseTestCase
 {
@@ -82,5 +89,45 @@ class InMemoryDecrementTest extends BaseTestCase
         // Then
         $countStat = $inMemoryClient->getStats()->getCounts()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $countStat->tags);
+    }
+
+    #[Test]
+    #[DataProviderExternal(EnumProvider::class, 'differentEnumTypesAndExpectedStringDataProvider')]
+    public function enumAsStat_recordsStatAsString(UnitEnum $case, string $converted): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter();
+
+        // When
+        $inMemoryClient->decrement($case, value: -144);
+
+        // Then
+        $countStat = $inMemoryClient->getStats()->getCounts()[0];
+        self::assertEqualsCanonicalizing($converted, $countStat->stat);
+    }
+
+    #[Test]
+    public function arrayOfEnumsAsStat_recordsStatsAsStrings(): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter();
+
+        // When
+        $inMemoryClient->decrement([IntBackedEnum::TWO, StringBackedEnum::A, PlainUnitEnum::FIRST, "hello"], value: 1994);
+
+        // Then
+        self::assertCount(
+            4,
+            /** @var array<int, InMemoryCountRecord> $countStats */
+            $countStats = $inMemoryClient->getStats()->getCounts()
+        );
+        self::assertEquals("2", $countStats[0]->stat);
+        self::assertEquals(-1994, $countStats[0]->count);
+        self::assertEquals("a", $countStats[1]->stat);
+        self::assertEquals(-1994, $countStats[1]->count);
+        self::assertEquals("FIRST", $countStats[2]->stat);
+        self::assertEquals(-1994, $countStats[2]->count);
+        self::assertEquals("hello", $countStats[3]->stat);
+        self::assertEquals(-1994, $countStats[3]->count);
     }
 }

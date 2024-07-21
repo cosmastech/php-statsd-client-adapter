@@ -2,8 +2,7 @@
 
 namespace Cosmastech\StatsDClientAdapter\TagNormalizers;
 
-use BackedEnum;
-use UnitEnum;
+use Cosmastech\StatsDClientAdapter\Utility\EnumConverter;
 
 class ConvertEnumNormalizer implements TagNormalizer
 {
@@ -13,24 +12,11 @@ class ConvertEnumNormalizer implements TagNormalizer
      */
     public function normalize(array $tags): array
     {
-        $toReturn = [];
+        $normalizedTags = [];
         foreach ($tags as $key => $value) {
-            $toReturn[$key] = $this->convertEnumToName($value);
+            $normalizedTags[$key] = EnumConverter::convertIfEnum($value);
         }
 
-        return $toReturn;
-    }
-
-    protected function convertEnumToName(mixed $value): mixed
-    {
-        if (! $value instanceof UnitEnum) {
-            return $value;
-        }
-
-        if ($value instanceof BackedEnum) {
-            return $value->value;
-        }
-
-        return $value->name;
+        return $normalizedTags;
     }
 }

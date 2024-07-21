@@ -6,10 +6,13 @@ use Cosmastech\StatsDClientAdapter\Adapters\InMemory\InMemoryClientAdapter;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryStatsRecord;
 use Cosmastech\StatsDClientAdapter\TagNormalizers\NoopTagNormalizer;
 use Cosmastech\StatsDClientAdapter\Tests\BaseTestCase;
+use Cosmastech\StatsDClientAdapter\Tests\DataProviders\EnumProvider;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\ClockStub;
 use Cosmastech\StatsDClientAdapter\Tests\Doubles\TagNormalizerSpy;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
+use UnitEnum;
 
 class InMemorySetTest extends BaseTestCase
 {
@@ -80,5 +83,20 @@ class InMemorySetTest extends BaseTestCase
         // Then
         $setStat = $inMemoryClient->getStats()->getSets()[0];
         self::assertEqualsCanonicalizing(["hello" => "world", "abc" => 123], $setStat->tags);
+    }
+
+    #[Test]
+    #[DataProviderExternal(EnumProvider::class, 'differentEnumTypesAndExpectedStringDataProvider')]
+    public function enumAsStat_recordsStatAsString(UnitEnum $case, string $converted): void
+    {
+        // Given
+        $inMemoryClient = new InMemoryClientAdapter();
+
+        // When
+        $inMemoryClient->set($case, 3);
+
+        // Then
+        $setRecord = $inMemoryClient->getStats()->getSets()[0];
+        self::assertEqualsCanonicalizing($converted, $setRecord->stat);
     }
 }
