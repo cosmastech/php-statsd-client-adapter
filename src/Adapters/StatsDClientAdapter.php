@@ -13,7 +13,12 @@ interface StatsDClientAdapter
      * @param  array<mixed, mixed>  $tags
      * @return void
      */
-    public function timing(string|UnitEnum $stat, float $durationMs, float $sampleRate = 1.0, array $tags = []): void;
+    public function timing(
+        string|UnitEnum $stat,
+        float $durationMs,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void;
 
     /**
      * Record a timing stat for the duration of the $closure.
@@ -24,7 +29,12 @@ interface StatsDClientAdapter
      * @param  array<mixed, mixed>  $tags
      * @return mixed The return value of $closure
      */
-    public function time(callable $closure, string|UnitEnum $stat, float $sampleRate = 1.0, array $tags = []);
+    public function time(
+        callable $closure,
+        string|UnitEnum $stat,
+        float $sampleRate = 1.0,
+        array $tags = []
+    );
 
     /**
      * @param  string|UnitEnum  $stat
@@ -33,7 +43,12 @@ interface StatsDClientAdapter
      * @param  array<mixed, mixed>  $tags
      * @return void
      */
-    public function gauge(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void;
+    public function gauge(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void;
 
     /**
      * @param  string|UnitEnum  $stat
@@ -42,7 +57,12 @@ interface StatsDClientAdapter
      * @param  array<mixed, mixed>  $tags
      * @return void
      */
-    public function histogram(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void;
+    public function histogram(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void;
 
     /**
      * @param  string|UnitEnum  $stat
@@ -51,7 +71,12 @@ interface StatsDClientAdapter
      * @param  array<mixed, mixed>  $tags
      * @return void
      */
-    public function distribution(string|UnitEnum $stat, float $value, float $sampleRate = 1.0, array $tags = []): void;
+    public function distribution(
+        string|UnitEnum $stat,
+        float $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void;
 
     /**
      * @param  string|UnitEnum  $stat
@@ -60,7 +85,12 @@ interface StatsDClientAdapter
      * @param  array<mixed, mixed>  $tags
      * @return void
      */
-    public function set(string|UnitEnum $stat, float|string $value, float $sampleRate = 1.0, array $tags = []): void;
+    public function set(
+        string|UnitEnum $stat,
+        float|string $value,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void;
 
     /**
      * @param  string|UnitEnum|array<int, string|UnitEnum>  $stats
@@ -69,7 +99,12 @@ interface StatsDClientAdapter
      * @param  int  $value
      * @return void
      */
-    public function increment(array|string|\UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void;
+    public function increment(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = 1
+    ): void;
 
     /**
      * @param  string|UnitEnum|array<int, string|UnitEnum>  $stats
@@ -78,7 +113,12 @@ interface StatsDClientAdapter
      * @param  int  $value
      * @return void
      */
-    public function decrement(array|string|\UnitEnum $stats, float $sampleRate = 1.0, array $tags = [], int $value = 1): void;
+    public function decrement(
+        array|string|UnitEnum $stats,
+        float $sampleRate = 1.0,
+        array $tags = [],
+        int $value = 1
+    ): void;
 
     /**
      * @param  string|UnitEnum|array<int, string|UnitEnum>  $stats
@@ -87,7 +127,12 @@ interface StatsDClientAdapter
      * @param  array<mixed, mixed> $tags
      * @return void
      */
-    public function updateStats(array|string|\UnitEnum $stats, int $delta = 1, float $sampleRate = 1.0, array $tags = []): void;
+    public function updateStats(
+        array|string|UnitEnum $stats,
+        int $delta = 1,
+        float $sampleRate = 1.0,
+        array $tags = []
+    ): void;
 
     /**
      * Returning underlying client.
