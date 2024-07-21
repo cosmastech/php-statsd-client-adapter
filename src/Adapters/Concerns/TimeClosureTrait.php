@@ -2,12 +2,14 @@
 
 namespace Cosmastech\StatsDClientAdapter\Adapters\Concerns;
 
+use UnitEnum;
+
 trait TimeClosureTrait
 {
     /**
      * @inheritDoc
      */
-    public function time(callable $closure, string|\UnitEnum $stat, float $sampleRate = 1.0, array $tags = [])
+    public function time(callable $closure, string|UnitEnum $stat, float $sampleRate = 1.0, array $tags = [])
     {
         $startTime = intval($this->clock->now()->format("Uv"));
 
