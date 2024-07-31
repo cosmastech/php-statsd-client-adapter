@@ -7,6 +7,7 @@ use Cosmastech\StatsDClientAdapter\Adapters\Concerns\HasDefaultTagsTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TagNormalizerAwareTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Concerns\TimeClosureTrait;
 use Cosmastech\StatsDClientAdapter\Adapters\Contracts\TagNormalizerAware;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\Contracts\InMemoryStatsRecordInterface;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryCountRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryDistributionRecord;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\InMemoryGaugeRecord;
@@ -34,13 +35,13 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
 
     /**
      * @param  array<mixed, mixed>  $defaultTags
-     * @param  InMemoryStatsRecord  $inMemoryStatsRecord
+     * @param  InMemoryStatsRecordInterface  $inMemoryStatsRecord
      * @param  TagNormalizer  $tagNormalizer
      * @param  ClockInterface  $clock
      */
     public function __construct(
         array $defaultTags = [],
-        InMemoryStatsRecord $inMemoryStatsRecord = new InMemoryStatsRecord(),
+        InMemoryStatsRecordInterface $inMemoryStatsRecord = new InMemoryStatsRecord(),
         TagNormalizer $tagNormalizer = new NoopTagNormalizer(),
         ClockInterface $clock = new Clock()
     ) {
@@ -224,7 +225,7 @@ class InMemoryClientAdapter implements StatsDClientAdapter, TagNormalizerAware
     /**
      * Get all recorded stats.
      */
-    public function getStats(): InMemoryStatsRecord
+    public function getStats(): InMemoryStatsRecordInterface
     {
         return $this->stats;
     }

@@ -32,6 +32,7 @@ class InMemoryTimingTest extends BaseTestCase
         $inMemoryClient->timing("timing-stat", 199, 0.2, ["timing" => "some-value"]);
 
         // Then
+        /** @var InMemoryStatsRecord $statsRecord */
         $statsRecord = $inMemoryClient->getStats();
         self::assertCount(1, $statsRecord->getTimings());
 
