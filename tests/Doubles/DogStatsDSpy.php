@@ -36,45 +36,45 @@ class DogStatsDSpy extends DogStatsd
      * @inheritDoc
      * @phpstan-ignore missingType.iterableValue
      */
-    public function timing($stat, $time, $sampleRate = 1.0, $tags = null)
+    public function timing($stat, $time, $sampleRate = 1.0, $tags = null, $cardinality = null)
     {
-        $this->timings[] = compact('stat', 'time', 'sampleRate', 'tags');
+        $this->timings[] = compact('stat', 'time', 'sampleRate', 'tags', 'cardinality');
     }
 
     /**
      * @inheritDoc
      * @phpstan-ignore missingType.iterableValue
      */
-    public function gauge($stat, $value, $sampleRate = 1.0, $tags = null)
+    public function gauge($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
     {
-        $this->gauges[] = compact('stat', 'value', 'sampleRate', 'tags');
+        $this->gauges[] = compact('stat', 'value', 'sampleRate', 'tags', 'cardinality');
     }
 
     /**
      * @inheritDoc
      * @phpstan-ignore missingType.iterableValue
      */
-    public function histogram($stat, $value, $sampleRate = 1.0, $tags = null)
+    public function histogram($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
     {
-        $this->histograms[] = compact('stat', 'value', 'sampleRate', 'tags');
+        $this->histograms[] = compact('stat', 'value', 'sampleRate', 'tags', 'cardinality');
     }
 
     /**
      * @inheritDoc
      * @phpstan-ignore missingType.iterableValue
      */
-    public function distribution($stat, $value, $sampleRate = 1.0, $tags = null)
+    public function distribution($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
     {
-        $this->distributions[] = compact('stat', 'value', 'sampleRate', 'tags');
+        $this->distributions[] = compact('stat', 'value', 'sampleRate', 'tags', 'cardinality');
     }
 
     /**
      * @inheritdoc
      * @phpstan-ignore missingType.iterableValue
      */
-    public function set($stat, $value, $sampleRate = 1.0, $tags = null)
+    public function set($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
     {
-        $this->sets[] = compact('stat', 'value', 'sampleRate', 'tags');
+        $this->sets[] = compact('stat', 'value', 'sampleRate', 'tags', 'cardinality');
     }
 
     /**
@@ -86,9 +86,10 @@ class DogStatsDSpy extends DogStatsd
         $stats,
         $sampleRate = 1.0,
         $tags = null,
-        $value = 1
+        $value = 1,
+        $cardinality = null
     ) {
-        $this->increments[] = compact('stats', 'value', 'sampleRate', 'tags');
+        $this->increments[] = compact('stats', 'value', 'sampleRate', 'tags', 'cardinality');
     }
 
     /**
@@ -96,8 +97,8 @@ class DogStatsDSpy extends DogStatsd
      * @param  string|array<int, mixed>  $stats
      * @param  array<int, mixed>|string  $tags
      */
-    public function decrement($stats, $sampleRate = 1.0, $tags = null, $value = -1)
+    public function decrement($stats, $sampleRate = 1.0, $tags = null, $value = -1, $cardinality = null)
     {
-        $this->decrements[] = compact('stats', 'value', 'sampleRate', 'tags');
+        $this->decrements[] = compact('stats', 'value', 'sampleRate', 'tags', 'cardinality');
     }
 }
