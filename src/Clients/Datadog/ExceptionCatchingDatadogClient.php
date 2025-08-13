@@ -13,21 +13,21 @@ class ExceptionCatchingDatadogClient extends DogStatsd
      *
      * @var Closure(Throwable, mixed): void
      */
-    protected Closure $exceptionCallback;
+    protected Closure $onExceptionCallback;
 
     /**
      * @{inheritDoc}
      *
-     * @param  (Closure(\Throwable, mixed): void)  $exceptionCallbackHandler The callback to execute when there is an exception flushing stats to DataDog
+     * @param  (Closure(\Throwable, mixed): void)  $onExceptionCallback The callback to execute when there is an exception flushing stats to DataDog
      */
     #[\Override]
     public function __construct(
         array $config,
-        Closure $exceptionCallbackHandler,
+        Closure $onExceptionCallback,
     ) {
         parent::__construct($config);
 
-        $this->exceptionCallback = $exceptionCallbackHandler;
+        $this->onExceptionCallback = $onExceptionCallback;
     }
 
     /**
@@ -40,7 +40,7 @@ class ExceptionCatchingDatadogClient extends DogStatsd
         try {
             parent::report($message);
         } catch (Throwable $exception) {
-            call_user_func($this->exceptionCallback, $exception, $message);
+            call_user_func($this->onExceptionCallback, $exception, $message);
         }
     }
 }
