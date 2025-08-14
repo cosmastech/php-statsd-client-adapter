@@ -15,7 +15,7 @@ trait ConvertsStatTrait
     {
         if (is_array($value)) {
             $convertedStats = [];
-            foreach($value as $element) {
+            foreach ($value as $element) {
                 $convertedStats[] = $this->convertValueToString($element);
             }
 
