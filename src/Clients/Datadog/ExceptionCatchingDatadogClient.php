@@ -20,7 +20,6 @@ class ExceptionCatchingDatadogClient extends DogStatsd
      *
      * @param  (Closure(\Throwable, mixed): void)  $onExceptionCallback The callback to execute when there is an exception flushing stats to DataDog
      */
-    #[\Override]
     public function __construct(
         array $config,
         Closure $onExceptionCallback,

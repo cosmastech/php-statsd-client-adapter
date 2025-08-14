@@ -34,6 +34,7 @@ class DogStatsDSpy extends DogStatsd
 
     /**
      * @inheritDoc
+     * @param mixed $cardinality
      * @phpstan-ignore missingType.iterableValue
      */
     public function timing($stat, $time, $sampleRate = 1.0, $tags = null, $cardinality = null)
@@ -43,6 +44,7 @@ class DogStatsDSpy extends DogStatsd
 
     /**
      * @inheritDoc
+     * @param mixed $cardinality
      * @phpstan-ignore missingType.iterableValue
      */
     public function gauge($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
@@ -52,6 +54,7 @@ class DogStatsDSpy extends DogStatsd
 
     /**
      * @inheritDoc
+     * @param mixed $cardinality
      * @phpstan-ignore missingType.iterableValue
      */
     public function histogram($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
@@ -61,6 +64,7 @@ class DogStatsDSpy extends DogStatsd
 
     /**
      * @inheritDoc
+     * @param mixed $cardinality
      * @phpstan-ignore missingType.iterableValue
      */
     public function distribution($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
@@ -70,6 +74,7 @@ class DogStatsDSpy extends DogStatsd
 
     /**
      * @inheritdoc
+     * @param mixed $cardinality
      * @phpstan-ignore missingType.iterableValue
      */
     public function set($stat, $value, $sampleRate = 1.0, $tags = null, $cardinality = null)
@@ -79,8 +84,9 @@ class DogStatsDSpy extends DogStatsd
 
     /**
      * @inheritDoc
-     * @param  string|array<int, mixed> $stats
-     * @param  array<int, mixed>|string $tags
+     * @param mixed $cardinality
+     * @param string|array<int, mixed> $stats
+     * @param array<int, mixed>|string $tags
      */
     public function increment(
         $stats,
@@ -94,8 +100,9 @@ class DogStatsDSpy extends DogStatsd
 
     /**
      * @inheritdoc
-     * @param  string|array<int, mixed>  $stats
-     * @param  array<int, mixed>|string  $tags
+     * @param string|array<int, mixed> $stats
+     * @param array<int, mixed>|string $tags
+     * @param mixed $cardinality
      */
     public function decrement($stats, $sampleRate = 1.0, $tags = null, $value = -1, $cardinality = null)
     {
