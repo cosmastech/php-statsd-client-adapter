@@ -47,6 +47,11 @@ For a local development setup, you could just write the stats to a log. This wri
 
 See [examples/log_datadog.php](examples/log_datadog.php) for how you might implement this.
 
+### ExceptionCatchingDatadogClient
+This client will allow handling exceptions thrown when attempting to write data to DataDog.
+
+See [examples/safe_datadog.php](examples/safe_datadog.php) for how to use this client.
+
 ### LeagueStatsDClientAdapter
 You can also write to an arbitrary statsd server by leveraging [PHP League's statsd package](https://github.com/thephpleague/statsd).
 
