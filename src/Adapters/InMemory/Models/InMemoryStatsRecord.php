@@ -3,12 +3,13 @@
 namespace Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models;
 
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\Concerns\GetAndSetRecordsTrait;
+use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\Contracts\InMemoryStatsRecordInterface;
 use Cosmastech\StatsDClientAdapter\Adapters\InMemory\Models\Contracts\RecordInterface;
 
 /**
  * Container class for storing all stats.
  */
-class InMemoryStatsRecord implements RecordInterface
+class InMemoryStatsRecord implements RecordInterface, InMemoryStatsRecordInterface
 {
     use GetAndSetRecordsTrait;
 
